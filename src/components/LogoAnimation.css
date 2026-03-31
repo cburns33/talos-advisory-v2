@@ -1,0 +1,48 @@
+.logo-animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #F2E9DC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.logo-animation-container svg {
+  width: 90%;
+  height: 90%;
+  max-width: 800px;
+}
+
+.logo-animation-container #circuit-group path,
+.logo-animation-container #circuit-group circle {
+  opacity: 0;
+}
+
+.logo-animation-container #text-group {
+  opacity: 0;
+}
+
+.logo-animation-container #circuit-group path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Fade out animation */
+.logo-animation-container.fade-out {
+  animation: fadeOut 0.8s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

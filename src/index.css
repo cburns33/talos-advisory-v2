@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kalam:wght@400;700&family=Montserrat:wght@700&display=swap');
+
+:root {
+  --color-terracotta: oklch(65.3% 0.12 30.5);
+  --color-dusk-blue: oklch(46.48% 0.08 254.8);
+  --color-sandy-brown: oklch(79.86% 0.15 63.98);
+  --color-tropical-teal: oklch(69.98% 0.13 198.5);
+  --color-cool-steel: oklch(70.1% 0.03 220.5);
+
+  --bg: oklch(0.9376 0.0199 77.31);
+  --bg-alt: oklch(0.96 0.01 88);
+  --text: oklch(15.98% 0 0);
+  --text-muted: oklch(36.3% 0 0);
+
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+  --font-accent: 'Kalam', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+main {
+  overflow-x: clip;
+}
