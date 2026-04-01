@@ -5,9 +5,9 @@ export const siteContent = {
     heroProofLine: 'No-BS digital marketing strategy focused on real business outcomes, not vanity dashboards.',
   },
   snapshotItems: [
-    { label: 'Lead Gen Focus', value: 'Truthful Data', note: 'Optimize for decisions that drive pipeline, not noise.' },
-    { label: 'Approach', value: 'No Black Box', note: 'Transparent strategy and execution from audit to action.' },
     { label: 'Operating Model', value: 'Human + AI', note: 'Use AI for speed, keep strategy grounded in human behavior.' },
+    { label: 'Approach', value: 'No Black Box', note: 'Transparent strategy and execution from audit to action.' },
+    { label: 'Lead Gen Focus', value: 'Truthful Data', note: 'Optimize for decisions that drive pipeline, not noise.' },
   ],
   processSteps: [
     {

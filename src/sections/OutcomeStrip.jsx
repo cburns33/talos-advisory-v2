@@ -1,7 +1,7 @@
 const snapshotConnectionColors = [
-  'var(--color-sandy-brown)',
-  'var(--color-dusk-blue)',
   'var(--color-terracotta)',
+  'var(--color-dusk-blue)',
+  'var(--color-sandy-brown)',
 ];
 
 const OutcomeStrip = ({ items }) => {

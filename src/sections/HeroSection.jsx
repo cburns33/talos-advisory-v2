@@ -102,7 +102,15 @@ const HeroSection = ({ adapter }) => {
                   className={`headline-accent ${line.accentClass}`}
                   data-headline-accent={line.id}
                 >
-                  {line.accentWord}
+                  {line.accentWord.split('').map((letter, letterIndex) => (
+                    <span
+                      key={letterIndex}
+                      className="headline-letter"
+                      style={{ '--letter-index': letterIndex }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
                 </span>
                 <span
                   className={`headline-period-dot ${line.accentClass}`}

@@ -84,6 +84,10 @@
   white-space: nowrap;
 }
 
+.headline-letter {
+  display: inline-block;
+}
+
 .headline-period-dot {
   display: inline-block;
   width: 0.135em;
@@ -123,7 +127,13 @@
 @media (max-width: 767px) {
   .hero-copy h1 {
     max-width: calc(100vw - 2rem);
-    font-size: clamp(2rem, 6vw, 3rem) !important;
+    font-size: clamp(1.65rem, 5.2vw, 2.45rem) !important;
+  }
+
+  .headline-line {
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   .neo-cta-button {
@@ -326,7 +336,7 @@
 }
 
 .process-card {
-  border: 1px solid color-mix(in oklab, var(--text) 14%, white);
+  border: 2px solid color-mix(in oklab, var(--text) 14%, white);
   border-radius: 12px;
   background: white;
   padding: 1rem;
@@ -348,32 +358,49 @@
   color: var(--color-terracotta);
 }
 
+.section-title--bottom {
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 2rem;
+}
+
 .problem-section {
-  background-image: url('./assets/the-problem-section-background.svg');
+  background-image: url('./assets/The-Problem-section-background.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   padding-bottom: 4rem;
+  position: relative;
+  overflow: visible;
 }
 
 .problem-section .container {
   text-align: center;
+  position: relative;
+  /* Constrain text to stay within SVG safe area */
+  max-width: min(800px, 85vw);
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-.problem-section .section-title,
-.problem-text {
+.problem-section .section-title {
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  margin: 0 0 1.5rem;
   color: #ffffff;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .problem-text {
   margin: 0;
-  max-width: 70ch;
-  line-height: 1.7;
-  font-size: clamp(1rem, 2vw, 1.35rem);
+  max-width: 100%;
+  line-height: 1.6;
+  font-size: clamp(0.9rem, 2.2vw, 1.25rem);
   margin-inline: auto;
   text-align: center;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.35);
 }
+
 
 .dark-funnel-term {
   position: relative;
@@ -383,23 +410,38 @@
   background: white;
   border-radius: 6px;
   padding: 0.2rem 0.45rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.dark-funnel-term.is-active {
+  box-shadow: 0 0 0 2px #1a1a1a;
 }
 
 .dark-funnel-tooltip {
   position: absolute;
-  left: 50%;
-  top: calc(100% + 0.5rem);
-  transform: translateX(-50%);
-  width: min(320px, 75vw);
   background: var(--color-sandy-brown);
   color: var(--text);
   border: 3px solid #1a1a1a;
   border-radius: 8px;
   box-shadow: 6px 6px 0 #1a1a1a;
   padding: 0.8rem;
-  font-size: 0.85rem;
+  font-size: calc(0.85rem - 2px);
   text-align: left;
   z-index: 5;
+}
+
+.dark-funnel-tooltip::before {
+  content: '';
+  position: absolute;
+  left: var(--tooltip-pointer-x, 50%);
+  top: -0.55rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: var(--color-sandy-brown);
+  border-left: 3px solid #1a1a1a;
+  border-top: 3px solid #1a1a1a;
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .neo-grid {
