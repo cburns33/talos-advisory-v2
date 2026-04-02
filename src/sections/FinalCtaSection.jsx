@@ -24,7 +24,7 @@ const FinalCtaSection = ({ finalCta, adapter }) => {
             aria-expanded={showForm}
             aria-controls="footer-lead-form"
           >
-            Stop wasting budget
+            Get an ad account audit
           </button>
           <div
             id="footer-lead-form"
@@ -32,7 +32,7 @@ const FinalCtaSection = ({ finalCta, adapter }) => {
             aria-hidden={!showForm}
             data-element="Final Lead Form"
           >
-            <LeadCaptureForm adapter={adapter} source="footer" ctaLabel="Stop wasting budget" />
+            <LeadCaptureForm adapter={adapter} source="footer" ctaLabel="Get an ad account audit" />
           </div>
         </div>
       </div>

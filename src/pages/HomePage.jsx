@@ -8,7 +8,7 @@ import LogosSection from '../sections/LogosSection';
 import FinalCtaSection from '../sections/FinalCtaSection';
 import LoadingScreen from '../components/LoadingScreen';
 import { siteContent } from '../content/siteContent';
-import { createMailtoAdapter } from '../forms/adapters/mailtoAdapter';
+import { createGoogleAppsScriptAdapter } from '../forms/adapters/googleAppsScriptAdapter';
 
 const connectorMap = [
   { accentIndex: 1, snapshotIndex: 3, color: 'var(--color-terracotta)' },
@@ -18,7 +18,9 @@ const connectorMap = [
 
 const HomePage = () => {
   const formAdapter = useMemo(
-    () => createMailtoAdapter({ to: siteContent.siteMeta.contactEmail }),
+    () => createGoogleAppsScriptAdapter({
+      endpointUrl: 'https://script.google.com/macros/s/AKfycbx40gFk4z4clQRpTgt-x-mDWFOkZ4Fpls8Mtk71FHgF4ApJesXALhWl8MAUAk_fxLpvIw/exec'
+    }),
     []
   );
   const heroSnapshotClusterRef = useRef(null);
@@ -384,8 +386,21 @@ const HomePage = () => {
       resizeObserver.observe(heroSnapshotClusterRef.current);
     }
 
+    const ctaButton = heroSnapshotClusterRef.current?.querySelector('[data-element="Hero CTA Button"]');
+    const heroFormReveal = heroSnapshotClusterRef.current?.querySelector('#hero-lead-form');
+
+    const refreshPathsAfterLayoutShift = () => {
+      updatePaths();
+      requestAnimationFrame(updatePaths);
+      setTimeout(updatePaths, 120);
+      setTimeout(updatePaths, 280);
+      setTimeout(updatePaths, 420);
+    };
+
     updatePaths();
     window.addEventListener('resize', updatePaths);
+    ctaButton?.addEventListener('click', refreshPathsAfterLayoutShift);
+    heroFormReveal?.addEventListener('transitionend', refreshPathsAfterLayoutShift);
 
     // Load GSAP and setup animations
     loadGSAP().then(() => {
@@ -402,6 +417,8 @@ const HomePage = () => {
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener('resize', updatePaths);
+      ctaButton?.removeEventListener('click', refreshPathsAfterLayoutShift);
+      heroFormReveal?.removeEventListener('transitionend', refreshPathsAfterLayoutShift);
     };
   }, [animatePaths, animateColors]);
 

@@ -2,6 +2,9 @@ const HowIWorkSection = ({ steps }) => {
   return (
     <section className="section" data-section="How I Work Section" aria-label="How I Work Section">
       <div className="container">
+        <div className="text-center">
+          <h2 className="section-title section-title--mask">HOW I WORK</h2>
+        </div>
         <div className="process-grid">
           {steps.map((step, index) => (
             <article 
@@ -15,7 +18,6 @@ const HowIWorkSection = ({ steps }) => {
             </article>
           ))}
         </div>
-        <h2 className="section-title section-title--bottom">HOW I WORK</h2>
       </div>
     </section>
   );

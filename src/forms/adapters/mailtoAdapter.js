@@ -19,6 +19,6 @@ export const createMailtoAdapter = ({ to, subjectPrefix = 'Talos Advisory Lead' 
     ].join('\n');
 
     window.location.href = toMailto({ to, subject, body });
-    return { ok: true, message: 'Opening your email client...' };
+    return { ok: true };
   },
 });

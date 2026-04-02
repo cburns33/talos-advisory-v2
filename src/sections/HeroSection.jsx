@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import LeadCaptureForm from '../components/LeadCaptureForm';
+import logoImage from '../assets/logo.svg';
 
 // Canvas-based text measurement (Pretext-style)
 const measureTextWidth = (text, fontSize, fontFamily = "'Montserrat', sans-serif") => {
@@ -89,7 +90,9 @@ const HeroSection = ({ adapter }) => {
     <section className="section section--hero" data-section="Hero Section" aria-label="Hero Section">
       <div className="container hero-layout">
         <div className="hero-copy">
-          <p className="eyebrow">Talos Advisory</p>
+          <div className="eyebrow-logo">
+            <img src={logoImage} alt="Talos Advisory" className="logo-image" />
+          </div>
           <h1
             ref={headlineRef}
             className="hero-headline-fit"
@@ -137,7 +140,7 @@ const HeroSection = ({ adapter }) => {
             aria-hidden={!showForm}
             data-element="Hero Lead Form"
           >
-            <LeadCaptureForm adapter={adapter} source="hero" ctaLabel="Stop wasting budget" />
+            <LeadCaptureForm adapter={adapter} source="hero" ctaLabel="Get an ad account audit" />
           </div>
         </div>
       </div>

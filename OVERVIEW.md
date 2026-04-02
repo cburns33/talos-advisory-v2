@@ -6,7 +6,11 @@
 Primary conversion pattern:
 - `Hero CTA Button` reveals `Hero Lead Form`
 - `Final CTA Button` reveals `Final Lead Form`
-- Current submit adapter: `mailto` fallback via `createMailtoAdapter`
+- Current submit adapter: Google Apps Script Web App via `createGoogleAppsScriptAdapter`
+- Form submissions now:
+  - Submit directly without launching the visitor's email client
+  - Send email notifications to `chase@talos-advisory.com`
+  - Can be logged to Google Sheets via Apps Script
 
 ## Tech Stack
 - React 19
@@ -37,6 +41,22 @@ High-level sequence:
 Notes:
 - Mobile skips desktop path drawing and goes directly to card border reveals.
 - Connector/color mapping is centralized in `connectorMap`.
+- Headline connector paths are re-calculated during Hero form expand/collapse transitions to prevent visible detachment gaps.
+
+## Recent UX Updates
+- Header brand text replaced with SVG logo (`src/assets/logo.svg`) with responsive sizing.
+- Hero and Final CTA builds are aligned (`Get an ad account audit` label + same reveal behavior).
+- CTA hover treatment uses circular wipe animation (WhatsApp-inspired) across both CTA button variants.
+- Form submit state updates:
+  - `Sending...` remains fully opaque
+  - Success state uses sage green (`#659157`) and `We'll speak soon!`
+  - Success CTA is disabled/non-clickable and does not run the wipe overlay
+- `Dark Funnel` trigger text styling updated to black background with white text (tooltip unchanged).
+- `How I Work` heading moved above cards with a desktop heading box treatment.
+- Heading capitalization standardization:
+  - `THE PROBLEM`
+  - `CORE SERVICES`
+  - `BRANDS I'VE HELPED BUILD`
 
 ## Key Files
 - `src/pages/HomePage.jsx` — page composition + animation orchestration
@@ -49,6 +69,9 @@ Notes:
 - `src/sections/LogosSection.jsx` — logos area
 - `src/sections/FinalCtaSection.jsx` — bottom CTA/form
 - `src/App.css` — layout and visual styling
+- `src/forms/adapters/googleAppsScriptAdapter.js` — frontend form adapter for Apps Script endpoint
+- `google-apps-script/Code.gs` — Apps Script backend handler (email + sheet logging)
+- `google-apps-script/SETUP.md` — deployment/config instructions for Apps Script web app
 - `GLOSSARY.md` — canonical naming conventions for discussions/edits
 - `WIREFRAME.md` — design intent and layout rules
 

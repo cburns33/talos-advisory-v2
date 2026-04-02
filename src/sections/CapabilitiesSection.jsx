@@ -26,15 +26,51 @@ const CapabilitiesSection = ({ capabilities }) => {
   return (
     <section className="section" data-section="Capabilities Section" aria-label="Capabilities Section">
       <div className="container text-center">
-        <h2 className="section-title">Core Services</h2>
-
         <div className="neo-grid">
-          {capabilities.map((capability, index) => (
+          {capabilities.slice(0, 2).map((capability, index) => (
             <div
               key={capability.title}
               className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
               data-element="Capabilities Flip Cards"
               onClick={(event) => handleCardClick(index, event)}
+              style={{
+                transform: `rotate(${capability.rotate || '0deg'})`,
+                '--card-rotation': capability.rotate || '0deg',
+              }}
+            >
+              <div className="flip-card-inner">
+                <div
+                  className="flip-card-front neo-box"
+                  style={{
+                    backgroundColor: capability.color,
+                    color: capability.textColor,
+                  }}
+                >
+                  <h3 style={{ color: capability.textColor }}>{capability.title}</h3>
+                </div>
+                <div
+                  className="flip-card-back neo-box"
+                  style={{
+                    backgroundColor: capability.color,
+                    color: capability.textColor,
+                  }}
+                >
+                  <p style={{ color: capability.textColor }}>{capability.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <h2 className="section-title section-title--middle">Core Services</h2>
+        
+        <div className="neo-grid">
+          {capabilities.slice(2).map((capability, index) => (
+            <div
+              key={capability.title}
+              className={`flip-card ${flippedCards[index + 2] ? 'flipped' : ''}`}
+              data-element="Capabilities Flip Cards"
+              onClick={(event) => handleCardClick(index + 2, event)}
               style={{
                 transform: `rotate(${capability.rotate || '0deg'})`,
                 '--card-rotation': capability.rotate || '0deg',

@@ -48,16 +48,17 @@ const LeadCaptureForm = ({ adapter, source, ctaLabel = 'Send message' }) => {
       </label>
 
       <div className="lead-form-actions">
-        <button type="submit" disabled={status === 'submitting'} className="btn-primary">
-          {status === 'submitting' ? 'Sending...' : ctaLabel}
+        <button
+          type="submit"
+          disabled={status === 'submitting' || status === 'success'}
+          className={`btn-primary ${status === 'success' ? 'is-success' : ''}`.trim()}
+        >
+          {status === 'submitting' ? 'Sending...' : status === 'success' ? "We'll speak soon!" : ctaLabel}
         </button>
-        <a href="mailto:chase@talos-advisory.com" className="link-inline">
-          Or email chase@talos-advisory.com
-        </a>
       </div>
 
-      {feedback ? (
-        <p className={`form-feedback form-feedback--${status === 'error' ? 'error' : 'success'}`}>
+      {status === 'error' && feedback ? (
+        <p className="form-feedback form-feedback--error">
           {feedback}
         </p>
       ) : null}
