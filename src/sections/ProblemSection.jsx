@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import problemBg from '../assets/The-Problem-section-background.svg';
 
 const ProblemSection = ({ problem }) => {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -58,7 +59,12 @@ const ProblemSection = ({ problem }) => {
   }, [showTooltip]);
 
   return (
-    <section className="section problem-section" data-section="Problem Section" aria-label="Problem Section">
+    <section 
+      className="section problem-section" 
+      data-section="Problem Section" 
+      aria-label="Problem Section"
+      style={{ backgroundImage: `url(${problemBg})` }}
+    >
       <div className="container" ref={containerRef}>
         <h2 className="section-title">{problem.title}</h2>
         <p className="problem-text" ref={paragraphRef}>
