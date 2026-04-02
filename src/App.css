@@ -451,8 +451,12 @@
   text-transform: uppercase;
 }
 
+:root {
+  --bg-problem: url('./assets/The-Problem-section-background.svg');
+}
+
 .problem-section {
-  background-image: url('./assets/The-Problem-section-background.svg');
+  background-image: var(--bg-problem);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
