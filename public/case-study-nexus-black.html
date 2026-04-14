@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study: Nexus Black — Talos Advisory</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --color-terracotta:   oklch(65.3%  0.12  30.5);
+      --color-dusk-blue:    oklch(46.48% 0.08 254.8);
+      --color-sandy-brown:  oklch(79.86% 0.15  63.98);
+      --color-tropical-teal:oklch(69.98% 0.13 198.5);
+      --bg:                 oklch(0.9376 0.0199 77.31);
+      --bg-alt:             oklch(0.96   0.01   88);
+      --text:               oklch(15.98% 0 0);
+      --text-muted:         oklch(36.3%  0 0);
+      --font-body:          'Inter', system-ui, sans-serif;
+      --font-display:       'Montserrat', sans-serif;
+    }
+
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; }
+    h1, h2, h3, h4 { margin: 0; }
+
+    /* ─── Layout Utilities ─── */
+    .container {
+      width: min(1080px, 100% - 2rem);
+      margin: 0 auto;
+    }
+    .section {
+      padding: clamp(3rem, 8vw, 5.5rem) 0;
+    }
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 0.75rem;
+    }
+
+    /* ─── Site Header ─── */
+    .site-header {
+      padding: 1.25rem 0;
+      border-bottom: 2px solid color-mix(in oklab, var(--text) 12%, white);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .header-logo {
+      height: 40px;
+      width: auto;
+      opacity: 0.75;
+    }
+    .header-back {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 2px solid color-mix(in oklab, var(--text) 20%, white);
+      border-radius: 4px;
+      padding: 0.4rem 0.9rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .header-back:hover {
+      border-color: var(--color-dusk-blue);
+      color: var(--color-dusk-blue);
+    }
+
+    /* ─── Hero ─── */
+    .cs-hero {
+      padding: clamp(3rem, 9vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem);
+    }
+    .cs-hero-inner {
+      max-width: 780px;
+    }
+    .cs-tag {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--color-dusk-blue);
+      color: #fff;
+      border-radius: 3px;
+      padding: 0.28rem 0.65rem;
+      margin: 0 0 1.25rem;
+    }
+    .cs-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin: 0 0 1.1rem;
+    }
+    .cs-hero-title span {
+      color: var(--color-terracotta);
+    }
+    .cs-hero-subtitle {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 0 2.2rem;
+    }
+    .cs-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.4rem;
+      padding: 1.1rem 1.4rem;
+      background: white;
+      border: 2px solid color-mix(in oklab, var(--text) 14%, white);
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--text) 10%, white);
+    }
+    .cs-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .cs-meta-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .cs-meta-value {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .cs-meta-divider {
+      width: 1px;
+      background: color-mix(in oklab, var(--text) 10%, white);
+      align-self: stretch;
+    }
+
+    /* ─── Snapshot Strip ─── */
+    .snapshot-strip {
+      background: var(--color-dusk-blue);
+      padding: clamp(2rem, 5vw, 3rem) 0;
+    }
+    .snapshot-strip .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem 2rem;
+    }
+    .snap-stat {
+      text-align: center;
+    }
+    .snap-number {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--color-sandy-brown);
+      line-height: 1;
+      margin: 0 0 0.35rem;
+    }
+    .snap-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.4;
+    }
+
+    /* ─── Section Titles ─── */
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0 0 0.5rem;
+    }
+    .section-lead {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 64ch;
+      margin: 0 0 2.5rem;
+    }
+
+    /* ─── Challenge Section ─── */
+    .challenge-layout {
+      display: grid;
+      gap: 2rem;
+      align-items: start;
+    }
+    .challenge-quote {
+      border-left: 4px solid var(--color-terracotta);
+      padding: 1.2rem 1.5rem;
+      background: white;
+      border-radius: 0 10px 10px 0;
+      box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--text) 8%, white);
+    }
+    .challenge-quote p {
+      font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .challenge-quote .quote-attribution {
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-terracotta);
+    }
+
+    /* ─── Phase Cards ─── */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .phase-card {
+      border: 2px solid #1a1a1a;
+      border-radius: 10px;
+      padding: 1.6rem;
+      background: white;
+      box-shadow: 5px 5px 0 0 #1a1a1a;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .phase-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .phase-number {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      line-height: 1;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .phase-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding-top: 0.3rem;
+    }
+    .phase-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .phase-title {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: var(--text);
+    }
+    .phase-body {
+      font-size: 0.97rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      border-top: 1px solid color-mix(in oklab, var(--text) 10%, white);
+      padding-top: 0.75rem;
+    }
+    .phase-card--terracotta .phase-number,
+    .phase-card--terracotta .phase-label { color: var(--color-terracotta); }
+    .phase-card--terracotta { border-color: var(--color-terracotta); box-shadow: 5px 5px 0 0 var(--color-terracotta); }
+
+    .phase-card--dusk-blue .phase-number,
+    .phase-card--dusk-blue .phase-label { color: var(--color-dusk-blue); }
+    .phase-card--dusk-blue { border-color: var(--color-dusk-blue); box-shadow: 5px 5px 0 0 var(--color-dusk-blue); }
+
+    .phase-card--sandy .phase-number,
+    .phase-card--sandy .phase-label { color: oklch(65% 0.14 63.98); }
+    .phase-card--sandy { border-color: oklch(65% 0.14 63.98); box-shadow: 5px 5px 0 0 oklch(65% 0.14 63.98); }
+
+    /* ─── Channel & Budget ─── */
+    .budget-layout {
+      display: grid;
+      gap: 1.2rem;
+    }
+    .budget-card {
+      background: white;
+      border: 2px solid color-mix(in oklab, var(--text) 14%, white);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--text) 8%, white);
+    }
+    .budget-split {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .budget-bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .budget-bar-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+    }
+    .budget-bar-track {
+      height: 10px;
+      background: color-mix(in oklab, var(--text) 8%, white);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .budget-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+    .budget-bar-fill--upper { background: var(--color-terracotta); width: 40%; }
+    .budget-bar-fill--mid   { background: var(--color-dusk-blue);  width: 60%; }
+    .budget-note {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+
+    .creative-card {
+      background: var(--color-dusk-blue);
+      border: 2px solid #1a1a1a;
+      border-radius: 10px;
+      padding: 1.8rem 2rem;
+      box-shadow: 5px 5px 0 0 #1a1a1a;
+    }
+    .creative-card .eyebrow { color: rgba(255,255,255,0.6); }
+    .creative-card .section-heading { color: #fff; margin-bottom: 0.8rem; }
+    .creative-card p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.82);
+    }
+    .creative-pill {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 99px;
+      margin-top: 1rem;
+    }
+
+    /* ─── Success Metrics ─── */
+    .metrics-grid {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: 1fr;
+    }
+    .metric-card {
+      background: white;
+      border: 2px solid color-mix(in oklab, var(--text) 14%, white);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--text) 8%, white);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    .metric-index {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      line-height: 1;
+      color: color-mix(in oklab, var(--text) 10%, white);
+    }
+    .metric-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--text);
+      margin: 0 0 0.45rem;
+    }
+    .metric-desc {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+
+    /* ─── Footer CTA ─── */
+    .cs-footer {
+      background: var(--text);
+      padding: clamp(3rem, 8vw, 5rem) 0;
+      text-align: center;
+    }
+    .cs-footer .eyebrow { color: rgba(255,255,255,0.45); }
+    .cs-footer-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: #fff;
+      margin: 0 0 0.75rem;
+      line-height: 1.15;
+    }
+    .cs-footer-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 48ch;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
+    }
+    .cs-cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--color-terracotta);
+      border: 2px solid #fff;
+      border-radius: 4px;
+      padding: 0.85rem 2rem;
+      box-shadow: 4px 4px 0 0 rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+    }
+    .cs-cta-btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0 0 rgba(255,255,255,0.3);
+    }
+
+    /* ─── Divider ─── */
+    .section-divider {
+      height: 2px;
+      background: color-mix(in oklab, var(--text) 8%, white);
+      margin: 0;
+      border: none;
+    }
+
+    /* ─── Desktop Grid Upgrades ─── */
+    @media (min-width: 768px) {
+      .challenge-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+      .phase-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .budget-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .cs-meta-bar {
+        flex-wrap: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Site Header ─── -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" aria-label="Back to Talos Advisory">
+        <img src="/favicon.svg" alt="Talos Advisory" class="header-logo" />
+      </a>
+      <a href="/" class="header-back">← Back to Site</a>
+    </div>
+  </header>
+
+  <!-- ─── Hero ─── -->
+  <section class="cs-hero section">
+    <div class="container">
+      <div class="cs-hero-inner">
+        <p class="eyebrow">Case Study</p>
+        <h1 class="cs-hero-title">
+          Launching Nexus Black:<br />
+          A Strategic Blueprint for<br />
+          <span>Enterprise AI.</span>
+        </h1>
+        <p class="cs-hero-subtitle">
+          How we navigated the transition from legacy systems to an AI-first brand identity — shifting market perception of IFS from a "system of record" to an "intelligence engine."
+        </p>
+        <div class="cs-meta-bar">
+          <div class="cs-meta-item">
+            <span class="cs-meta-label">Client</span>
+            <span class="cs-meta-value">IFS / Nexus Black</span>
+          </div>
+          <div class="cs-meta-divider" aria-hidden="true"></div>
+          <div class="cs-meta-item">
+            <span class="cs-meta-label">Industry</span>
+            <span class="cs-meta-value">Enterprise ERP / AI</span>
+          </div>
+          <div class="cs-meta-divider" aria-hidden="true"></div>
+          <div class="cs-meta-item">
+            <span class="cs-meta-label">Scope</span>
+            <span class="cs-meta-value">Brand Launch &amp; Demand Gen</span>
+          </div>
+          <div class="cs-meta-divider" aria-hidden="true"></div>
+          <div class="cs-meta-item">
+            <span class="cs-meta-label">Framework</span>
+            <span class="cs-meta-value">Concentric Circle Rollout</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Snapshot Strip ─── -->
+  <div class="snapshot-strip">
+    <div class="container">
+      <div class="snap-stat">
+        <p class="snap-number">↑ Branded Search</p>
+        <p class="snap-label">Measurable lift in searches for<br />"IFS Nexus" &amp; "Nexus Black"</p>
+      </div>
+      <div class="snap-stat">
+        <p class="snap-number">3-Phase</p>
+        <p class="snap-label">Concentric rollout from<br />existing customers to broad market</p>
+      </div>
+      <div class="snap-stat">
+        <p class="snap-number">40 / 60</p>
+        <p class="snap-label">Budget split: Upper-funnel brand<br />storytelling vs. mid-funnel capture</p>
+      </div>
+      <div class="snap-stat">
+        <p class="snap-number">↑ Sentiment</p>
+        <p class="snap-label">Verified shift from "Legacy"<br />to "Innovation" association</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── The Challenge ─── -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">01 — The Challenge</p>
+      <div class="challenge-layout">
+        <div>
+          <h2 class="section-heading">From system of record to intelligence engine.</h2>
+          <p class="section-lead">
+            IFS, an established leader in industrial ERP, needed to launch Nexus Black — a premium AI-driven offshoot designed to power the "autonomous enterprise." The goal was not just to generate leads, but to fundamentally shift market perception.
+          </p>
+          <p class="section-lead" style="margin-top: -1rem;">
+            The challenge: how do you get a brand known for stability and reliability to be seen as the frontier of AI innovation — without alienating the existing customer base that made it successful?
+          </p>
+        </div>
+        <div class="challenge-quote">
+          <p>"The goal was not just to generate leads, but to shift market perception of the parent brand from a 'system of record' to an 'intelligence engine.'"</p>
+          <p class="quote-attribution">— Campaign Brief, Nexus Black Launch</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ─── Strategic Framework ─── -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">02 — Strategic Framework</p>
+      <h2 class="section-heading">The Concentric Circle Rollout.</h2>
+      <p class="section-lead">
+        To maximize budget efficiency and brand trust, the campaign was executed in three distinct phases — moving from the highest-trust audience outward to the broad market.
+      </p>
+      <div class="phase-grid">
+
+        <div class="phase-card phase-card--terracotta">
+          <div class="phase-card-header">
+            <span class="phase-number">01</span>
+            <div class="phase-title-block">
+              <span class="phase-label">Phase 1</span>
+              <h3 class="phase-title">The Advocacy Layer</h3>
+            </div>
+          </div>
+          <p class="phase-body">
+            We targeted the existing IFS customer base first using first-party CRM data and LinkedIn Matched Audiences. By reaching users already familiar with the ecosystem, we created a "land and expand" effect — generating initial brand buzz from people with existing brand affinity.
+          </p>
+        </div>
+
+        <div class="phase-card phase-card--dusk-blue">
+          <div class="phase-card-header">
+            <span class="phase-number">02</span>
+            <div class="phase-title-block">
+              <span class="phase-label">Phase 2</span>
+              <h3 class="phase-title">The Contextual Layer</h3>
+            </div>
+          </div>
+          <p class="phase-body">
+            Moving beyond persona-based targeting (which relies on unreliable third-party data), we focused on Contextual Placement — securing premium inventory on technical and industrial-AI focused domains. The goal: appear as a natural participant in conversations already happening.
+          </p>
+        </div>
+
+        <div class="phase-card phase-card--sandy">
+          <div class="phase-card-header">
+            <span class="phase-number">03</span>
+            <div class="phase-title-block">
+              <span class="phase-label">Phase 3</span>
+              <h3 class="phase-title">The Broad Market</h3>
+            </div>
+          </div>
+          <p class="phase-body">
+            Only after establishing trust in the first two circles did we launch broader awareness. High-integrity placements — avoiding junk display networks and mobile apps — drove the narrative to the wider enterprise C-Suite with credibility already in hand.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ─── Channel & Creative ─── -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">03 — Channel Allocation &amp; Creative Philosophy</p>
+      <h2 class="section-heading" style="margin-bottom: 2rem;">Budget with intention. Creative with purpose.</h2>
+      <div class="budget-layout">
+
+        <div class="budget-card">
+          <p class="eyebrow" style="margin-bottom: 1.2rem;">Budget Guardrails</p>
+          <div class="budget-bar-wrap">
+            <span class="budget-bar-label">
+              <span>Upper Funnel — Brand Storytelling</span>
+              <strong>40%</strong>
+            </span>
+            <div class="budget-bar-track">
+              <div class="budget-bar-fill budget-bar-fill--upper"></div>
+            </div>
+          </div>
+          <div class="budget-bar-wrap" style="margin-top: 0.9rem;">
+            <span class="budget-bar-label">
+              <span>Mid Funnel — Educational Capture</span>
+              <strong>60%</strong>
+            </span>
+            <div class="budget-bar-track">
+              <div class="budget-bar-fill budget-bar-fill--mid"></div>
+            </div>
+          </div>
+          <p class="budget-note" style="margin-top: 1.2rem;">
+            40% of the budget was dedicated to upper-funnel brand storytelling — high-production video and thought leadership — while 60% captured the demand those brand ads generated through educational blueprints and direct response.
+          </p>
+        </div>
+
+        <div class="creative-card">
+          <p class="eyebrow">Creative Direction</p>
+          <h3 class="section-heading">What the user becomes — not what the AI does.</h3>
+          <p>
+            We moved away from "Product Specification" messaging and toward "Strategic Empowerment." Creative assets featured the concept of "Autonomous Flow" — clean, minimalist visuals that deliberately contrasted with the noisy, feature-heavy creative of competitors.
+          </p>
+          <span class="creative-pill">Autonomous Flow — Clean, Minimalist, Empowerment-Led</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ─── Measuring Success ─── -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">04 — Measuring Success</p>
+      <h2 class="section-heading">Proving it wasn't vanity spend.</h2>
+      <p class="section-lead">
+        Brand marketing without accountability is just expensive guessing. We built three measurement pillars that satisfied leadership and proved the investment was working.
+      </p>
+      <div class="metrics-grid">
+
+        <div class="metric-card">
+          <span class="metric-index">01</span>
+          <div class="metric-body">
+            <h3 class="metric-title">Branded Search Lift</h3>
+            <p class="metric-desc">
+              An increase in searches for "IFS Nexus" and "Nexus Black" during the launch period — proving the ads triggered active interest, not passive impressions.
+            </p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-index">02</span>
+          <div class="metric-body">
+            <h3 class="metric-title">Assisted Conversion Volume</h3>
+            <p class="metric-desc">
+              Tracking how many "Business Hub" trial sign-ups had a Nexus Black brand ad as their first-touch attribution point — connecting brand spend to pipeline.
+            </p>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-index">03</span>
+          <div class="metric-body">
+            <h3 class="metric-title">Sentiment Shift</h3>
+            <p class="metric-desc">
+              Social listening and post-campaign surveys measured the change in the brand's association with "Innovation" vs. "Legacy" — the core perception goal of the campaign.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer CTA ─── -->
+  <footer class="cs-footer">
+    <div class="container">
+      <p class="eyebrow">Talos Advisory</p>
+      <h2 class="cs-footer-heading">Ready to launch something that actually moves the market?</h2>
+      <p class="cs-footer-sub">
+        Strategic brand marketing for companies that can't afford to blend in. Let's talk about what a campaign like this looks like for your business.
+      </p>
+      <a href="/" class="cs-cta-btn">Work with Talos Advisory</a>
+    </div>
+  </footer>
+
+</body>
+</html>
