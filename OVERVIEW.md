@@ -27,6 +27,9 @@ Primary conversion pattern:
 6. `Logos Section`
 7. `Final CTA Section`
 
+## Additional Pages
+- `public/case-study-nexus-black.html` — Standalone case study page for the IFS Nexus Black campaign. This is a static HTML file that uses the same design tokens (colors, fonts, neo-brutalist styling) as the main landing page. It is not part of the React app and is served directly from the `public/` folder.
+
 ## Core Animation System
 Main orchestration is in `src/pages/HomePage.jsx`.
 
