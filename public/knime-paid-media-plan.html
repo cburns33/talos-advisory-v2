@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>KNIME Paid Media Program | Talos Advisory</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.min.css">
+  <style>
+
+    :root {
+      --knime-yellow: #FFDE00;
+      --knime-orange: #F89639;
+      --knime-mint:   #A8D5C2;
+      --charcoal:     #231F20;
+      --charcoal-2:   #2d2829;
+      --light-gray:   #F2F2F2;
+      --white:        #FFFFFF;
+      --muted:        #6B7280;
+      --muted-dark:   #9aa0a6;
+    }
+
+    /* ─── Talos Portfolio Nav ─── */
+    .talos-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 50px;
+      background: rgba(26, 26, 26, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 9999;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .talos-nav-logo { height: 28px; width: auto; opacity: 0.8; }
+    .talos-nav-back {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 0.3rem 0.75rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .talos-nav-back:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+    html, body { background: #000; }
+
+    .reveal {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+      color: var(--charcoal);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides > section,
+    .reveal .slides > section > section {
+      padding: 0;
+      height: 100%;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Figtree', system-ui, sans-serif;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      margin: 0 0 0.4em 0;
+      color: inherit;
+    }
+
+    .reveal h1 { font-size: 2.6em; letter-spacing: -0.02em; }
+    .reveal h2 { font-size: 1.9em; }
+    .reveal h3 { font-size: 1.15em; }
+    .reveal h4 { font-size: 0.85em; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+
+    .reveal p, .reveal li { font-size: 0.72em; line-height: 1.5; }
+
+    /* Slide shells */
+    .slide {
+      box-sizing: border-box;
+      padding: 60px 80px 50px 80px;
+      height: 100%;
+      position: relative;
+    }
+    .slide-dark {
+      background: var(--charcoal);
+      color: var(--white);
+    }
+    .slide-dark h1, .slide-dark h2, .slide-dark h3 { color: var(--white); }
+    .slide-light {
+      background: var(--light-gray);
+      color: var(--charcoal);
+    }
+
+    /* Logo mark on every slide */
+    .logo-mark {
+      position: absolute;
+      top: 34px;
+      right: 54px;
+      height: 28px;
+      z-index: 20;
+      opacity: 0.95;
+    }
+    .logo-mark img { height: 100%; width: auto; display: block; }
+    .slide-dark .logo-mark img { filter: brightness(0) invert(1); }
+
+    /* Slide number chip */
+    .slide-number-chip {
+      position: absolute;
+      top: 40px;
+      left: 80px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.55em;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+    }
+    .slide-dark .slide-number-chip { color: var(--muted-dark); }
+
+    /* Corner stack decorative motif */
+    .corner-stack {
+      position: absolute;
+      bottom: 40px;
+      left: 70px;
+      display: flex;
+      gap: 4px;
+      opacity: 0.8;
+      z-index: 5;
+    }
+    .corner-stack span {
+      width: 12px;
+      height: 12px;
+      display: block;
+    }
+    .corner-stack span:nth-child(1) { background: var(--knime-yellow); transform: rotate(-8deg); }
+    .corner-stack span:nth-child(2) { background: var(--knime-orange); transform: rotate(4deg); }
+    .corner-stack span:nth-child(3) { background: var(--knime-mint); transform: rotate(-3deg); }
+
+    /* Footer signature */
+    .slide-sig {
+      position: absolute;
+      bottom: 34px;
+      right: 80px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.55em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .slide-dark .slide-sig { color: var(--muted-dark); }
+
+    /* Headline block */
+    .headline-block { margin-bottom: 1.2em; }
+    .eyebrow {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.55em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--knime-yellow);
+      font-weight: 700;
+      margin-bottom: 0.9em;
+      display: inline-block;
+    }
+    .slide-light .eyebrow { color: var(--knime-orange); }
+    .subhead {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.85em;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.3;
+      margin-top: -0.2em;
+      max-width: 52em;
+    }
+    .slide-dark .subhead { color: var(--muted-dark); }
+
+    /* Stat boxes */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin: 1em 0 1.4em 0;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--knime-yellow);
+      padding: 18px 20px 20px;
+      border-radius: 2px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .slide-light .stat-box {
+      background: #FFFFFF;
+      border: 1px solid #e5e5e5;
+      border-left: 3px solid var(--knime-orange);
+    }
+    .stat-value {
+      font-family: 'Figtree', sans-serif;
+      font-size: 2.4em;
+      font-weight: 800;
+      color: var(--knime-yellow);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .slide-light .stat-value { color: var(--charcoal); }
+    .stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-dark);
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    .slide-light .stat-label { color: var(--muted); }
+
+    /* Two-col content row */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .assumptions-col ol { padding-left: 1.2em; margin: 0; }
+    .assumptions-col li {
+      font-size: 0.62em;
+      line-height: 1.5;
+      margin-bottom: 0.65em;
+      color: rgba(255,255,255,0.82);
+    }
+    .assumptions-col li::marker { color: var(--knime-yellow); font-weight: 700; }
+
+    /* Persona layout */
+    .persona-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 22px;
+    }
+    .persona-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .persona-card {
+      background: #FFFFFF;
+      border: 1px solid #e5e5e5;
+      border-top: 3px solid var(--accent, var(--knime-yellow));
+      padding: 16px 20px 18px;
+      border-radius: 2px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .slide-dark .persona-card {
+      background: var(--charcoal-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: 3px solid var(--accent, var(--knime-yellow));
+      box-shadow: 0 2px 14px rgba(0,0,0,0.28);
+    }
+    .persona-card h4 {
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .slide-dark .persona-card h4 { color: var(--muted-dark); }
+
+    /* ── KNIME Angle card: filled with slide accent color ── */
+    .persona-card.persona-card-angle {
+      background: var(--accent, var(--knime-yellow));
+      border-color: transparent;
+      border-top-color: transparent;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+    }
+    .persona-card.persona-card-angle h4 { color: rgba(0,0,0,0.42); }
+    .persona-card.persona-card-angle .persona-stat { color: rgba(0,0,0,0.82); }
+    .persona-card.persona-card-angle .persona-stat-label { color: rgba(0,0,0,0.52); }
+    .persona-card.persona-card-angle .card-bullets li { color: rgba(0,0,0,0.76); }
+    .persona-card.persona-card-angle .card-bullets li::before { color: rgba(0,0,0,0.42); opacity: 1; }
+    .persona-card p {
+      font-size: 0.58em;
+      line-height: 1.5;
+      margin: 0;
+      color: var(--charcoal);
+    }
+    .slide-dark .persona-card p { color: rgba(255,255,255,0.88); }
+
+    /* Persona accent bar (top of slide) */
+    .accent-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--accent, var(--knime-yellow));
+      z-index: 15;
+    }
+
+    /* Tier columns (slide 5, slide 7) */
+    .tier-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 22px;
+      margin-top: 1em;
+    }
+    .tier-column {
+      background: rgba(255,255,255,0.035);
+      border-top: 4px solid var(--accent);
+      padding: 18px 20px 20px;
+      border-radius: 2px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .slide-light .tier-column {
+      background: #FFFFFF;
+      border: 1px solid #e5e5e5;
+      border-top: 4px solid var(--accent);
+    }
+    .tier-column .tier-num {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.62em;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .tier-column h3 {
+      font-size: 0.95em;
+      margin-bottom: 14px;
+    }
+    .tier-column .tier-range {
+      display: block;
+      font-size: 0.58em;
+      font-weight: 500;
+      color: var(--muted-dark);
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+    .slide-light .tier-column .tier-range { color: var(--muted); }
+    .tier-column ul { list-style: none; padding: 0; margin: 0; }
+    .tier-column li {
+      font-size: 0.58em;
+      line-height: 1.45;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.88);
+    }
+    .slide-light .tier-column li {
+      border-bottom: 1px solid #ececec;
+      color: var(--charcoal);
+    }
+    .tier-column li:last-child { border-bottom: 0; }
+    .tier-column li strong {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 600;
+      display: block;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .slide-light .tier-column li strong { color: var(--charcoal); }
+
+    /* Callouts */
+    .callout {
+      border-left: 3px solid var(--knime-yellow);
+      background: rgba(255, 222, 0, 0.07);
+      padding: 12px 18px;
+      font-size: 0.6em;
+      line-height: 1.5;
+      border-radius: 2px;
+      margin-top: 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    .slide-light .callout {
+      background: rgba(255, 222, 0, 0.18);
+      border-left: 3px solid var(--knime-orange);
+      color: var(--charcoal);
+    }
+    .callout-title {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.95em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Budget bars (slide 6) */
+    .budget-table {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 1em 0 1.2em 0;
+    }
+    .budget-row {
+      display: grid;
+      grid-template-columns: 1.1fr 5fr 0.9fr 1.4fr 1.2fr;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: #FFFFFF;
+      border: 1px solid #e5e5e5;
+      border-radius: 2px;
+    }
+    .budget-channel {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 700;
+      font-size: 0.72em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .budget-icon { width: 15px; height: 15px; flex-shrink: 0; }
+    .budget-bar-wrap {
+      position: relative;
+      height: 26px;
+      background: #ececec;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .budget-bar {
+      height: 100%;
+      background: var(--bar-color, var(--knime-yellow));
+      border-radius: 2px;
+      transform-origin: left center;
+    }
+    .budget-dollar {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 800;
+      font-size: 0.85em;
+      color: var(--charcoal);
+      text-align: right;
+    }
+    .budget-meta {
+      font-size: 0.55em;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .budget-row-head {
+      background: transparent;
+      border: 0;
+      padding: 0 18px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.52em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .keyword-cluster {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .keyword-cluster > div {
+      background: #FFFFFF;
+      border-left: 3px solid var(--muted);
+      padding: 12px 16px;
+      border-radius: 2px;
+      font-size: 0.56em;
+      line-height: 1.5;
+    }
+    .keyword-cluster > div.kc-branded { border-left-color: var(--knime-yellow); }
+    .keyword-cluster > div.kc-category { border-left-color: var(--knime-mint); }
+    .keyword-cluster > div.kc-competitive { border-left-color: var(--knime-orange); }
+    .keyword-cluster strong {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.95em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+      color: var(--charcoal);
+    }
+
+    /* Slide 5 dashboard background */
+    .kap-bg {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 44%;
+      background-image: url('https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/kap-dashboard.webp');
+      background-size: cover;
+      background-position: left center;
+      opacity: 0.18;
+      mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+      z-index: 0;
+    }
+    .slide .slide-content { position: relative; z-index: 2; }
+
+    /* Slide 7 metrics — dashboard feel */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .metrics-right {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .excluded-box, .reporting-box {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 18px;
+      border-radius: 2px;
+    }
+    .excluded-box { border-left: 3px solid #EF5350; }
+    .reporting-box { border-left: 3px solid var(--knime-yellow); }
+    .excluded-box h4, .reporting-box h4 {
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 8px;
+      font-size: 0.7em;
+    }
+    .excluded-box ul, .reporting-box ul {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .excluded-box li, .reporting-box li {
+      font-size: 0.56em;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.45;
+      color: rgba(255,255,255,0.85);
+    }
+    .excluded-box li:last-child, .reporting-box li:last-child { border-bottom: 0; }
+    .reporting-box li strong {
+      color: var(--knime-yellow);
+      font-family: 'Figtree', sans-serif;
+      font-weight: 700;
+      display: inline-block;
+      min-width: 80px;
+    }
+
+    /* Title / hero slide */
+    .hero-title {
+      font-size: 3em;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      max-width: 14ch;
+    }
+    .hero-sub {
+      font-family: 'Figtree', sans-serif;
+      font-size: 1em;
+      font-weight: 500;
+      color: var(--muted-dark);
+      margin-top: 0.6em;
+      max-width: 34ch;
+      line-height: 1.3;
+    }
+
+    /* Slide 1 stats use yellow values */
+    .s1-stat .stat-value { color: var(--knime-yellow); }
+    .s1-stat:nth-child(2) .stat-value { color: var(--knime-orange); }
+    .s1-stat:nth-child(3) .stat-value { color: var(--knime-mint); }
+    .s1-stat:nth-child(4) .stat-value { color: var(--knime-yellow); }
+
+    /* Flow arrow decoration */
+    .flow-arrow {
+      position: absolute;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* Fragment entry polish */
+    .reveal .fragment.fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: all 0.45s ease;
+    }
+    .reveal .fragment.fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Slide 1 decorative background art ── */
+    .s1-bg-art {
+      position: absolute;
+      right: 80px;
+      top: 68px;
+      width: 660px;
+      height: 175px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .s1n-main, .s1n-curve, .s1n-child { opacity: 0; }
+    .title-ring { opacity: 0; }
+    .s1-title-content, .s1-title-footer { opacity: 0; }
+
+    /* Print / overview polish */
+    .reveal .controls { color: var(--knime-yellow); }
+    .reveal .progress { color: var(--knime-yellow); height: 4px; }
+    .reveal .progress span { background: var(--knime-yellow); }
+
+    /* Scale content for wide screens */
+    .reveal .slides section {
+      font-size: 22px;
+    }
+    /* Last slide (Metrics) keeps original size — already dense */
+    #metrics-slide { font-size: 20px; }
+
+    /* ── GSAP-managed entrance animations — initial hidden state ── */
+    .anim { opacity: 0; }
+
+    /* ── Persona card: bullet list variant ── */
+    .card-bullets { list-style: none; padding: 0; margin: 0; }
+    .card-bullets li {
+      font-size: 0.58em;
+      line-height: 1.5;
+      padding: 3px 0 3px 14px;
+      color: inherit;
+      position: relative;
+    }
+    .card-bullets li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent, var(--knime-yellow));
+      font-weight: 700;
+      opacity: 0.8;
+    }
+    .slide-dark .card-bullets li { color: rgba(255,255,255,0.88); }
+
+    /* ── Persona stat chip (proof point highlight) ── */
+    .persona-stat {
+      font-family: 'Figtree', sans-serif;
+      font-size: 1.6em;
+      font-weight: 800;
+      color: var(--accent, var(--knime-yellow));
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
+    }
+    .persona-stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.52em;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .slide-dark .persona-stat-label { color: var(--muted-dark); }
+
+    /* ── Persona headline with role icon ── */
+    .persona-headline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .persona-headline-text { flex: 1; min-width: 0; }
+    .persona-hero-icon {
+      width: 200px;
+      height: 150px;
+      color: var(--accent, var(--knime-yellow));
+      flex-shrink: 0;
+      opacity: 0.72;
+      margin-top: 8px;
+    }
+    .persona-hero-icon svg { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+
+  <nav class="talos-nav">
+    <a href="/" aria-label="Talos Advisory">
+      <img src="/favicon.svg" alt="Talos Advisory" class="talos-nav-logo" />
+    </a>
+    <a href="/case-study-knime.html" class="talos-nav-back">&#8592; Back to Case Study</a>
+  </nav>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ================= SLIDE 0: Title ================= -->
+    <section data-background-color="#231F20">
+      <div class="slide slide-dark" style="display:flex; flex-direction:column; height:100%; overflow:hidden;">
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <!-- Decorative arcs: full-slide, circle anchored at bottom-right corner -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle class="title-ring" cx="1440" cy="900" r="180" stroke="rgba(255,222,0,0.15)" stroke-width="8"/>
+          <circle class="title-ring" cx="1440" cy="900" r="340" stroke="rgba(255,222,0,0.11)" stroke-width="7"/>
+          <circle class="title-ring" cx="1440" cy="900" r="520" stroke="rgba(255,222,0,0.08)" stroke-width="6"/>
+          <circle class="title-ring" cx="1440" cy="900" r="700" stroke="rgba(255,222,0,0.06)" stroke-width="5"/>
+          <circle class="title-ring" cx="1440" cy="900" r="900" stroke="rgba(255,222,0,0.045)" stroke-width="4"/>
+        </svg>
+        <span class="fragment title-trigger" style="position:absolute;left:-9999px;" aria-hidden="true"></span>
+
+        <!-- Main content, vertically centered -->
+        <div class="s1-title-content" style="flex:1; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; max-width:860px;">
+          <span class="eyebrow" style="display:block; margin-bottom:24px; letter-spacing:0.22em;">Manufacturing Vertical &middot; Paid Media Program</span>
+          <h1 style="font-size:3.6em; line-height:1.06; margin:0 0 26px;">Manufacturing<br>Paid Media Program</h1>
+          <div style="width:52px; height:3px; background:var(--knime-yellow); margin-bottom:24px; opacity:0.8;"></div>
+          <p style="font-family:'Figtree',sans-serif; font-size:0.6em; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted-dark); margin:0;">Chase Burns &nbsp;&middot;&nbsp; KNIME Paid Media Manager</p>
+        </div>
+
+        <!-- Footer row -->
+        <div class="s1-title-footer" style="display:flex; justify-content:flex-start; align-items:flex-end; position:relative; z-index:1; padding-bottom:4px;">
+          <div style="font-family:'Figtree',sans-serif; font-size:0.52em; letter-spacing:0.24em; color:var(--knime-yellow); opacity:0.65;">
+            04 &middot; 21 &middot; 26
+          </div>
+        </div>
+      <aside class="notes">
+        <ul>
+          <li>Start warm, earn cold — activate existing accounts before spending on acquisition.</li>
+          <li>Right buyer, right moment — contextual relevance and ICP precision over volume and reach.</li>
+          <li>Revenue accountability — SALs and pipeline as the north star, MQL as a leading indicator only.</li>
+          <li>Built to compound — a program that gets more efficient every 60 days, not just bigger.</li>
+        </ul>
+      </aside>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 1: Program Goals ================= -->
+    <section data-background-color="#231F20">
+      <div class="slide slide-dark">
+        <div class="slide-number-chip">01 / Program Goals</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="headline-block anim anim-d1" style="margin-top: 60px;">
+          <span class="eyebrow">Manufacturing Vertical · Paid Media Program</span>
+          <h1 class="hero-title">Program Assumptions</h1>
+          <p class="hero-sub">MQLs as signals, SALs as objectives.</p>
+        </div>
+
+        <div class="stat-grid anim anim-d2">
+          <div class="stat-box s1-stat"><div class="stat-value">$15M</div><div class="stat-label">Pipeline Target</div></div>
+          <div class="stat-box s1-stat"><div class="stat-value">$50K</div><div class="stat-label">Monthly Budget</div></div>
+          <div class="stat-box s1-stat"><div class="stat-value">~150</div><div class="stat-label">SALs Required</div></div>
+          <div class="stat-box s1-stat"><div class="stat-value">&le;$4K</div><div class="stat-label">Target CPA / SAL</div></div>
+        </div>
+
+        <h4 class="anim anim-d3" style="color: var(--muted-dark); margin-top: 10px;">Key Assumptions</h4>
+        <div class="two-col assumptions-col anim anim-d4" style="margin-top: 10px;">
+          <ol start="1">
+            <li>ACV is roughly $100K, so ~150 SALs are required over 12 months to hit the $15M pipeline target.</li>
+            <li>At a 15% SAL rate from qualified leads, the program needs ~1,000 high-quality leads rather than raw form fills.</li>
+            <li>Sales cycle runs 3 to 6 months. Evaluate on a cohort basis, not last-click. Month 1 and Month 2 reflect build-out costs. Efficiency compounds from Month 3 onward.</li>
+          </ol>
+          <ol start="4">
+            <li>KNIME has existing CRM data and open-source user registrants at manufacturing accounts to seed Phase 1 matched-list targeting. If unavailable, the Phase 1 timeline extends and cold-acquisition budget increases.</li>
+            <li>MQL volume is a leading indicator only. Success is measured on SALs, pipeline contribution, and CAC efficiency.</li>
+            <li>This program will target the North America region only.</li>
+          </ol>
+        </div>
+
+        <div class="s1-bg-art" aria-hidden="true">
+          <svg viewBox="0 0 660 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- BEZIER CONNECTIONS -->
+            <path class="s1n-curve" d="M 562,87 C 540,50 444,20 434,41"
+                  stroke="rgba(168,213,194,0.32)" stroke-width="3" stroke-linecap="round"/>
+            <path class="s1n-curve" d="M 562,87 C 540,87 526,88 508,88"
+                  stroke="rgba(248,150,57,0.32)" stroke-width="3" stroke-linecap="round"/>
+            <path class="s1n-curve" d="M 562,87 C 540,120 380,155 360,135"
+                  stroke="rgba(255,222,0,0.22)" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- MAIN NODE -->
+            <g class="s1n-main">
+              <rect x="562" y="50" width="82" height="74" rx="6"
+                    fill="rgba(255,222,0,0.16)" stroke="rgba(255,222,0,0.55)" stroke-width="2.5"/>
+              <circle cx="562" cy="87" r="6" fill="rgba(255,222,0,0.65)"/>
+            </g>
+
+            <!-- TOP child — mint -->
+            <g class="s1n-child">
+              <rect x="366" y="20" width="68" height="42" rx="4"
+                    fill="rgba(168,213,194,0.10)" stroke="rgba(168,213,194,0.50)" stroke-width="2.5"/>
+              <circle cx="434" cy="41" r="4" fill="rgba(168,213,194,0.45)"/>
+            </g>
+
+            <!-- MIDDLE child — orange (closest to main) -->
+            <g class="s1n-child">
+              <rect x="440" y="67" width="68" height="42" rx="4"
+                    fill="rgba(248,150,57,0.10)" stroke="rgba(248,150,57,0.50)" stroke-width="2.5"/>
+              <circle cx="508" cy="88" r="4" fill="rgba(248,150,57,0.45)"/>
+            </g>
+
+            <!-- BOTTOM child — yellow (furthest left) -->
+            <g class="s1n-child">
+              <rect x="292" y="113" width="68" height="42" rx="4"
+                    fill="rgba(255,222,0,0.07)" stroke="rgba(255,222,0,0.38)" stroke-width="2.5"/>
+              <circle cx="360" cy="134" r="4" fill="rgba(255,222,0,0.35)"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        <ul>
+          <li>$15M/~$100K ACV = 150 customers needed. At a 15% SAL rate = 1,000 qualified leads needed from $600K annual spend = $600 CPL target and $4K CPA per SAL ceiling.</li>
+          <li>SALs > MQLs: "I've seen programs that hit MQL targets and still got cut during restructuring because Sales didn't trust or didn't like the leads."</li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- ================= SLIDE 2: Persona 01 — Analytics Manager ================= -->
+    <section data-background-color="#F2F2F2">
+      <div class="slide slide-light" style="--accent: #A8D5C2;">
+        <div class="accent-bar" style="background: #A8D5C2;"></div>
+        <div class="slide-number-chip">03 / Persona</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="headline-block anim persona-headline" style="margin-top: 50px;">
+          <div class="persona-headline-text">
+            <span class="eyebrow" style="color: #48a07f;">Persona 01</span>
+            <h1 style="font-size: 2.1em;">The Frustrated Analytics Manager</h1>
+            <p class="subhead">Head of Manufacturing Analytics · Director of Operational Intelligence · 1,000 to 10,000 employees</p>
+          </div>
+          <div class="persona-hero-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" fill="none">
+              <circle cx="18" cy="14" r="7" fill="currentColor"/>
+              <path d="M2 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <rect x="38" y="26" width="5" height="14" rx="1" fill="currentColor"/>
+              <rect x="46" y="20" width="5" height="20" rx="1" fill="currentColor"/>
+              <rect x="54" y="31" width="5" height="9" rx="1" fill="currentColor"/>
+              <line x1="36" y1="41" x2="62" y2="41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="persona-card-grid" style="--accent: #A8D5C2;">
+          <div class="persona-card anim anim-d2">
+            <h4>Core Pain</h4>
+            <ul class="card-bullets">
+              <li>Models built in notebooks, never reach production</li>
+              <li>Exec pressure for dashboards with no deployment path</li>
+              <li>Bottleneck is operationalization, not talent</li>
+            </ul>
+          </div>
+          <div class="persona-card persona-card-angle anim anim-d3">
+            <h4>KNIME Angle</h4>
+            <div class="persona-stat">90%</div>
+            <span class="persona-stat-label">Siemens reporting time reduction</span>
+            <ul class="card-bullets">
+              <li>Business Hub as MLOps infrastructure</li>
+              <li>Deploy and schedule workflows without engineering overhead</li>
+              <li>Infineon domain experts now self-serve</li>
+            </ul>
+          </div>
+          <div class="persona-card anim anim-d4">
+            <h4>Conversion Triggers</h4>
+            <ul class="card-bullets">
+              <li>Business Hub deployment architecture</li>
+              <li>&ldquo;What&rsquo;s Keeping AI Off the Factory Floor?&rdquo;</li>
+              <li>Infineon &amp; Siemens case studies</li>
+              <li>Team productivity ROI benchmarks</li>
+            </ul>
+          </div>
+          <div class="persona-card anim anim-d5">
+            <h4>Channels &amp; Behavior</h4>
+            <ul class="card-bullets">
+              <li>Google Search: &ldquo;operationalizing ML,&rdquo; &ldquo;data science deployment platform&rdquo;</li>
+              <li>LinkedIn secondary: job function + manufacturing filter</li>
+              <li>Active searcher who finds KNIME and builds the internal case</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout anim anim-d6" style="margin-top: 14px; background: rgba(168, 213, 194, 0.25); border-left-color: #48a07f;">
+          <span class="callout-title" style="color: #2f6b54;">Targeting Assumption</span>
+          MLOps angle over citizen data scientist. Enterprise manufacturing accounts at this budget have existing data teams with deployment bottlenecks.
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        <ul>
+          <li>This is the technical champion who finds KNIME, builds the internal case, and brings it up the chain to Persona 2.</li>
+          <li>The &ldquo;What&rsquo;s Keeping AI Off the Factory Floor?&rdquo; blog is written by Sasha Rezvina, the VP Marketing who will be in the room.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- ================= SLIDE 3: Persona 02 — Operations VP ================= -->
+    <section data-background-color="#F2F2F2">
+      <div class="slide slide-light" style="--accent: #F89639;">
+        <div class="accent-bar" style="background: #F89639;"></div>
+        <div class="slide-number-chip">02 / Persona</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="headline-block anim persona-headline" style="margin-top: 50px;">
+          <div class="persona-headline-text">
+            <span class="eyebrow" style="color: #c76500;">Persona 02</span>
+            <h1 style="font-size: 2.1em;">The Cost-Pressured Operations VP</h1>
+            <p class="subhead">VP Operations · VP Manufacturing · COO · 200 to 2,000 employees</p>
+          </div>
+          <div class="persona-hero-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" fill="none">
+              <circle cx="18" cy="14" r="7" fill="currentColor"/>
+              <path d="M2 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="50" cy="28" r="7" stroke="currentColor" stroke-width="2.5"/>
+              <circle cx="50" cy="28" r="3" fill="currentColor"/>
+              <path d="M50 19v3M50 34v3M41 28h3M56 28h3M43.9 21.9l2.1 2.1M53.9 31.9l2.1 2.1M43.9 34.1l2.1-2.1M53.9 24.1l2.1-2.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="persona-card-grid" style="--accent: #F89639;">
+          <div class="persona-card anim anim-d2">
+            <h4>Core Pain</h4>
+            <ul class="card-bullets">
+              <li>Unplanned downtime carries a hard dollar cost per hour</li>
+              <li>AI initiatives stall in &ldquo;pilot purgatory&rdquo;</li>
+              <li>Wants ROI without a 2-year data science buildout</li>
+            </ul>
+          </div>
+          <div class="persona-card persona-card-angle anim anim-d3">
+            <h4>KNIME Angle</h4>
+            <div class="persona-stat">&euro;30K</div>
+            <span class="persona-stat-label">Audi annual savings &middot; 80% debugging cost reduction</span>
+            <ul class="card-bullets">
+              <li>Anomaly detection deployed with no custom code</li>
+              <li>Breakdowns predicted up to 10 weeks in advance</li>
+              <li>Volkswagen reclaimed 500+ hours of manual work</li>
+            </ul>
+          </div>
+          <div class="persona-card anim anim-d4">
+            <h4>Conversion Triggers</h4>
+            <ul class="card-bullets">
+              <li>Hard-dollar downtime ROI calculators</li>
+              <li>Audi &amp; Volkswagen manufacturing case studies</li>
+              <li>ZF Friedrichshafen smart end-of-line test video</li>
+              <li>Named enterprise customer logos for peer validation</li>
+            </ul>
+          </div>
+          <div class="persona-card anim anim-d5">
+            <h4>Channels &amp; Behavior</h4>
+            <ul class="card-bullets">
+              <li>Rarely self-discovers via search</li>
+              <li>LinkedIn by title: VP Operations, COO + Manufacturing filter</li>
+              <li>Contextual: IndustryWeek, Manufacturing.net</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout anim anim-d6" style="margin-top: 14px; background: rgba(248, 150, 57, 0.14); border-left-color: #c76500;">
+          <span class="callout-title" style="color: #8a4500;">Targeting Logic</span>
+          Title and function over search intent. Championed by Persona 1 as deals escalate internally.
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        This is the economic buyer. He does not search for analytics platforms. He gets championed to them by Persona 1, or reached via LinkedIn. The Audi proof point is the strongest asset for this persona: 80% reduction in debugging expenses is a hard dollar outcome he immediately understands. &ldquo;Pilot purgatory&rdquo; is language from KNIME&rsquo;s own blog. Using their framing signals product fluency.
+      </aside>
+    </section>
+
+    <!-- ================= SLIDE 4: Persona 03 — Enterprise Architect ================= -->
+    <section data-background-color="#F2F2F2">
+      <div class="slide slide-light" style="--accent: #FFDE00;">
+        <div class="accent-bar" style="background: #FFDE00;"></div>
+        <div class="slide-number-chip">04 / Persona</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="headline-block anim persona-headline" style="margin-top: 50px;">
+          <div class="persona-headline-text">
+            <span class="eyebrow" style="color: #8a6b00;">Persona 03</span>
+            <h1 style="font-size: 2.1em;">The Enterprise Architect</h1>
+            <p class="subhead">Enterprise Architect · Chief Data Officer · IT Director · 5,000+ employees, often post-M&amp;A</p>
+          </div>
+          <div class="persona-hero-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" fill="none">
+              <circle cx="18" cy="14" r="7" fill="currentColor"/>
+              <path d="M2 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="50" cy="20" r="4" fill="currentColor"/>
+              <circle cx="40" cy="35" r="3.5" fill="currentColor"/>
+              <circle cx="60" cy="35" r="3.5" fill="currentColor"/>
+              <line x1="50" y1="24" x2="43" y2="32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="50" y1="24" x2="57" y2="32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="43.5" y1="38" x2="56.5" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2.5 2"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="persona-card-grid" style="--accent: #FFDE00;">
+          <div class="persona-card anim anim-d2">
+            <h4>Core Pain</h4>
+            <ul class="card-bullets">
+              <li>Too many point solutions post-M&amp;A</li>
+              <li>Needs composable, vendor-neutral analytics layer</li>
+              <li>Closed ecosystems are a non-starter</li>
+            </ul>
+          </div>
+          <div class="persona-card persona-card-angle anim anim-d3">
+            <h4>KNIME Angle</h4>
+            <div class="persona-stat">$0</div>
+            <span class="persona-stat-label">Open-source core licensing cost</span>
+            <ul class="card-bullets">
+              <li>Open-source platform + enterprise governance via Business Hub</li>
+              <li>Direct play against Alteryx and SAS pricing fatigue</li>
+              <li>Amplifies KNIME&rsquo;s active &ldquo;From Alteryx to KNIME&rdquo; displacement motion</li>
+            </ul>
+          </div>
+          <div class="persona-card anim anim-d4">
+            <h4>Conversion Triggers</h4>
+            <ul class="card-bullets">
+              <li>Alteryx vs. KNIME TCO comparison</li>
+              <li>Architecture whitepapers + security documentation</li>
+              <li>Community Hub open-source credibility</li>
+              <li>Siemens, Audi, VW, Continental logos</li>
+            </ul>
+          </div>
+          <div class="persona-card anim anim-d5">
+            <h4>Channels &amp; Behavior</h4>
+            <ul class="card-bullets">
+              <li>Google: &ldquo;Alteryx alternative enterprise,&rdquo; &ldquo;KNIME vs Alteryx TCO&rdquo;</li>
+              <li>LinkedIn matched list (Circle 1), TAL + competitive creative (Circle 2+)</li>
+              <li>KNIME Community Forum whitelisted contextual placement</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout anim anim-d6" style="margin-top: 14px; background: rgba(255, 222, 0, 0.22); border-left-color: #c9a800;">
+          <span class="callout-title" style="color: #7a5d00;">Credential Note</span>
+          Informed by direct IFS experience targeting this exact buyer archetype. Alteryx and SAS pricing fatigue plus open-source credibility are the strongest conversion levers at this seniority tier.
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        <ul>
+          <li>IFS background plug: I&rsquo;ve run campaigns against this exact buyer archetype.</li>
+          <li>KNIME is already running Alteryx displacement ads on LinkedIn. I spotted this in the wild and can reference it specifically.</li>
+          <li>The goal is not to start a new motion but to do the existing motion better: tighter audience precision, manufacturing vertical filter, and phased creative sequencing.</li>
+          <li>Based on my observations, KNIME's advantage is implementation speed; bulky enterprise softwares like IFS take ages to implement.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- ================= SLIDE 5: Engagement Model ================= -->
+    <section data-background-color="#231F20">
+      <div class="slide slide-dark">
+        <div class="kap-bg"></div>
+        <div class="slide-number-chip">05 / Engagement Model</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="slide-content" style="max-width: 68%;">
+          <div class="headline-block anim" style="margin-top: 50px;">
+            <span class="eyebrow">Targeting Structure</span>
+            <h1 style="font-size: 2.2em;">Engagement Model</h1>
+            <p class="subhead">Concentric Circle rollout. Activate warm accounts before spending on cold acquisition.</p>
+          </div>
+        </div>
+
+        <div class="tier-row slide-content" style="grid-template-columns: 1fr 1fr 1fr; margin-top: 12px;">
+          <div class="tier-column fragment fade-up" style="--accent: #A8D5C2;">
+            <span class="tier-num">01 · Activate</span>
+            <h3>Months 1 &ndash; 2</h3>
+            <ul>
+              <li><strong>Audience</strong>CRM matched lists plus open-source registrants at manufacturing accounts.</li>
+              <li><strong>Personas</strong>All personas. Skews Persona 3.</li>
+              <li><strong>Content</strong>Anomaly detection workflow template. Business Hub demo. Product-led assets.</li>
+              <li><strong>Goal</strong>Identify in-market accounts before cold-acquisition spend.</li>
+              <li><strong>Channels</strong>LinkedIn matched list. Google Search (branded, navigational).</li>
+            </ul>
+          </div>
+          <div class="tier-column fragment fade-up" style="--accent: #F89639;">
+            <span class="tier-num">02 · Expand</span>
+            <h3>Months 3 &ndash; 4</h3>
+            <ul>
+              <li><strong>Audience</strong>LinkedIn lookalikes seeded from Circle 1 converters plus contextual trade placements.</li>
+              <li><strong>Personas</strong>Persona 1 (technical search). Persona 2 (trade pub reach).</li>
+              <li><strong>Content</strong>&ldquo;What&rsquo;s Keeping AI Off the Factory Floor?&rdquo; Predictive maintenance ROI. Downtime calculators.</li>
+              <li><strong>Goal</strong>Net new accounts showing category intent.</li>
+              <li><strong>Channels</strong>LinkedIn TAL expansion. Google Search (non-branded). IndustryWeek and Manufacturing.net.</li>
+            </ul>
+          </div>
+          <div class="tier-column fragment fade-up" style="--accent: #FFDE00;">
+            <span class="tier-num">03 · Scale</span>
+            <h3>Months 5+</h3>
+            <ul>
+              <li><strong>Audience</strong>Broad manufacturing enterprise by title and industry. Retargeting pool from Circles 1 and 2.</li>
+              <li><strong>Personas</strong>All personas with persona-specific creative variants.</li>
+              <li><strong>Content</strong>Siemens, Audi, VW customer stories. Alteryx displacement creative. Analyst validation.</li>
+              <li><strong>Goal</strong>Widen pipeline coverage, lower blended CAC via retargeting efficiency.</li>
+              <li><strong>Channels</strong>Full mix active. Retargeting layer added. Competitive search keywords.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        <ul>
+          <li>Point out why we start with matched lists before cold acquisition. KNIME&rsquo;s open-source install base is a first-party data asset that most companies would pay significant budget to approximate via third-party intent data. We&rsquo;re using what we already own. The progression from warm to cold mirrors the sales motion. We are not buying attention, we are earning it from accounts already adjacent to the product. Use what you already own.</li>
+          <li>The progression from warm to cold mirrors the sales motion. We are not buying attention, we are earning it from accounts already adjacent to the product.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- ================= SLIDE 6: Channel & Budget ================= -->
+    <section data-background-color="#F2F2F2">
+      <div class="slide slide-light">
+        <div class="slide-number-chip">06 / Channel &amp; Budget</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="headline-block anim" style="margin-top: 50px;">
+          <span class="eyebrow">Allocation</span>
+          <h1 style="font-size: 2.2em;">Channel &amp; Budget Allocation</h1>
+          <p class="subhead">$50,000 per month. Phased activation aligned to Concentric Circle rollout.</p>
+        </div>
+
+        <div class="budget-row-head" style="display: grid; grid-template-columns: 1.1fr 5fr 0.9fr 1.4fr 1.2fr; gap: 16px; margin-bottom: 6px;">
+          <div>Channel</div><div>Allocation</div><div style="text-align:right;">Budget</div><div>Personas</div><div>Phase</div>
+        </div>
+        <div class="budget-table">
+          <div class="budget-row anim">
+            <div class="budget-channel">
+              <svg class="budget-icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--knime-orange);"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn ABM
+            </div>
+            <div class="budget-bar-wrap"><div class="budget-bar" data-width="100" style="--bar-color: var(--knime-orange); width: 100%;"></div></div>
+            <div class="budget-dollar">$22,000 <span style="font-weight:500; color:var(--muted); font-size:0.65em;">· 44%</span></div>
+            <div class="budget-meta">2 · 3 · 4</div>
+            <div class="budget-meta">All phases</div>
+          </div>
+          <div class="budget-row anim">
+            <div class="budget-channel">
+              <svg class="budget-icon" viewBox="0 0 24 24" fill="currentColor" style="color: #b59200;"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+              Google Search
+            </div>
+            <div class="budget-bar-wrap"><div class="budget-bar" data-width="68" style="--bar-color: var(--knime-yellow); width: 68%;"></div></div>
+            <div class="budget-dollar">$15,000 <span style="font-weight:500; color:var(--muted); font-size:0.65em;">· 30%</span></div>
+            <div class="budget-meta">2 · 4</div>
+            <div class="budget-meta">All phases</div>
+          </div>
+          <div class="budget-row anim">
+            <div class="budget-channel">
+              <svg class="budget-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #3a8a6a;"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M2 15h10M5 12v6"/></svg>
+              Contextual / Trade
+            </div>
+            <div class="budget-bar-wrap"><div class="budget-bar" data-width="36" style="--bar-color: var(--knime-mint); width: 36%;"></div></div>
+            <div class="budget-dollar">$8,000 <span style="font-weight:500; color:var(--muted); font-size:0.65em;">· 16%</span></div>
+            <div class="budget-meta">3</div>
+            <div class="budget-meta">Circle 2+</div>
+          </div>
+          <div class="budget-row anim">
+            <div class="budget-channel">
+              <svg class="budget-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #6B7280;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Retargeting
+            </div>
+            <div class="budget-bar-wrap"><div class="budget-bar" data-width="23" style="--bar-color: #6B7280; width: 23%;"></div></div>
+            <div class="budget-dollar">$5,000 <span style="font-weight:500; color:var(--muted); font-size:0.65em;">· 10%</span></div>
+            <div class="budget-meta">All</div>
+            <div class="budget-meta">Circle 3</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; align-items: start; margin-top: 8px;">
+          <div>
+            <h4 style="color: var(--muted); margin-bottom: 10px;">Google Search Keyword Clusters</h4>
+            <div class="keyword-cluster anim">
+              <div class="kc-branded">
+                <strong>Branded</strong>
+                &ldquo;KNIME manufacturing,&rdquo; &ldquo;KNIME Business Hub.&rdquo; Protect always.
+              </div>
+              <div class="kc-category">
+                <strong>Category</strong>
+                &ldquo;predictive maintenance platform,&rdquo; &ldquo;manufacturing analytics software.&rdquo; Persona 1 primary.
+              </div>
+              <div class="kc-competitive">
+                <strong>Competitive</strong>
+                &ldquo;Alteryx alternative,&rdquo; &ldquo;SAS replacement.&rdquo; Persona 4, Circle 2+.
+              </div>
+            </div>
+            <div style="margin-top: 14px;">
+              <strong style="font-family: Figtree; font-size: 0.52em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); display:block; margin-bottom:8px;">LinkedIn Progression</strong>
+              <div style="display:flex; align-items:stretch; gap:0;">
+                <div style="flex:1; background:rgba(168,213,194,0.15); border:1px solid rgba(168,213,194,0.55); border-radius:4px; padding:8px 10px;">
+                  <div style="font-family:Figtree; font-size:0.48em; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#3a8a6a; margin-bottom:3px;">Circle 1</div>
+                  <div style="font-family:Figtree; font-size:0.58em; font-weight:700; color:var(--charcoal); line-height:1.25;">Matched List</div>
+                  <div style="font-size:0.5em; color:var(--muted); line-height:1.3; margin-top:3px;">CRM + open-source registrants</div>
+                </div>
+                <div style="display:flex; align-items:center; padding:0 7px; color:var(--muted); font-size:0.75em;">&rarr;</div>
+                <div style="flex:1; background:rgba(248,150,57,0.12); border:1px solid rgba(248,150,57,0.45); border-radius:4px; padding:8px 10px;">
+                  <div style="font-family:Figtree; font-size:0.48em; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c76500; margin-bottom:3px;">Circle 2</div>
+                  <div style="font-family:Figtree; font-size:0.58em; font-weight:700; color:var(--charcoal); line-height:1.25;">TAL Expansion</div>
+                  <div style="font-size:0.5em; color:var(--muted); line-height:1.3; margin-top:3px;">Lookalikes + competitive creative</div>
+                </div>
+                <div style="display:flex; align-items:center; padding:0 7px; color:var(--muted); font-size:0.75em;">&rarr;</div>
+                <div style="flex:1; background:rgba(255,222,0,0.14); border:1px solid rgba(255,222,0,0.55); border-radius:4px; padding:8px 10px;">
+                  <div style="font-family:Figtree; font-size:0.48em; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#8a6b00; margin-bottom:3px;">Circle 3</div>
+                  <div style="font-family:Figtree; font-size:0.58em; font-weight:700; color:var(--charcoal); line-height:1.25;">Cold Scale</div>
+                  <div style="font-size:0.5em; color:var(--muted); line-height:1.3; margin-top:3px;">Title + industry cold, persona variants</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout anim" style="margin-top: 26px; background: #FFFFFF; border: 1px solid #e5e5e5; border-left: 3px solid var(--charcoal);">
+            <span class="callout-title" style="color: var(--charcoal);">Display Philosophy</span>
+            <div style="font-size: 0.95em; line-height: 1.5; color: var(--charcoal);">
+              No Google Display Network. Contextual budget is whitelisted only: IndustryWeek, Manufacturing.net, SME publications, KNIME Community Forum. Broad display inventory explicitly excluded. Prioritizing placement integrity over impression volume.
+            </div>
+          </div>
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        <ul>
+          <li>Display philosophy: GDN in B2B enterprise contexts is largely junk inventory: click fraud, bot traffic, mobile fat-finger clicks. The $8K contextual budget goes exclusively to environments where a VP Operations or Enterprise Architect is already in a problem-solving mindset. That is contextual relevance over behavioral targeting, a deliberate philosophical stance.</li>
+          <li>The $8K contextual budget goes to environments where a VP Operations or Enterprise Architect is already in a problem-solving mindset. Contextual relevance over behavioral targeting.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- ================= SLIDE 7: Metrics & Measurement (HIGHEST PRIORITY) ================= -->
+    <section data-background-color="#231F20">
+      <div class="slide slide-dark" id="metrics-slide">
+        <div class="slide-number-chip">07 / Metrics</div>
+        <div class="logo-mark"><img src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME"></div>
+
+        <div class="headline-block" style="margin-top: 50px;">
+          <span class="eyebrow">Measurement Framework</span>
+          <h1 style="font-size: 2.2em;">Metrics &amp; Measurement</h1>
+          <p class="subhead">Three tiers. Sales and Marketing read the same data without competing on what &ldquo;success&rdquo; means.</p>
+        </div>
+
+        <!-- Hero stat row -->
+        <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 8px;">
+          <div class="stat-box">
+            <div class="stat-value" data-counter="60" data-suffix="%" style="color: var(--knime-mint);">0%</div>
+            <div class="stat-label">ICP Match Rate Target</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" data-counter="15" data-suffix="%" style="color: var(--knime-orange);">0%</div>
+            <div class="stat-label">Target SAL Rate</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" data-counter="4" data-prefix="$" data-suffix="K" style="color: var(--knime-yellow);">$0K</div>
+            <div class="stat-label">CPA / SAL Ceiling</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" data-counter="15" data-prefix="$" data-suffix="M" style="color: var(--white);">$0M</div>
+            <div class="stat-label">12-Month Pipeline Target</div>
+          </div>
+        </div>
+
+        <div class="metrics-grid" style="margin-top: 18px;">
+          <div class="tier-row" style="grid-template-columns: 1fr 1fr 1fr; margin-top: 0;">
+            <div class="tier-column fragment fade-up" style="--accent: #A8D5C2;">
+              <span class="tier-num">01 · Leading Indicators</span>
+              <h3>Weeks 1 &ndash; 8 <span class="tier-range">Signal quality</span></h3>
+              <ul>
+                <li><strong>ICP Match Rate</strong>% of conversions matching firmographic and title criteria. Target &gt;60%.</li>
+                <li><strong>Micro-Conversion Rate</strong>By content type: templates vs. demo requests vs. pricing page visits.</li>
+                <li><strong>Branded Search Lift</strong>Week-over-week KNIME branded query volume growth.</li>
+                <li><strong>Account Engagement</strong>% of Circle 1 matched-list accounts engaging with &ge;1 ad unit.</li>
+              </ul>
+            </div>
+            <div class="tier-column fragment fade-up" style="--accent: #F89639;">
+              <span class="tier-num">02 · Program Health</span>
+              <h3>Months 2 &ndash; 4 <span class="tier-range">Marketing &harr; Sales</span></h3>
+              <ul>
+                <li><strong>SAL Rate</strong>% of leads accepted by Sales. Primary Marketing and Sales feedback loop.</li>
+                <li><strong>Cost per SAL</strong>By channel. Informs reallocation decisions at Circle 2 transition.</li>
+                <li><strong>Pipeline Contribution</strong>$ influenced pipeline via cohort analysis, not last-click.</li>
+                <li><strong>Circle Transition Velocity</strong>Time from first paid touchpoint to SAL.</li>
+              </ul>
+            </div>
+            <div class="tier-column fragment fade-up" style="--accent: #FFDE00;">
+              <span class="tier-num">03 · Business Impact</span>
+              <h3>Months 6+ <span class="tier-range">Executive reporting</span></h3>
+              <ul>
+                <li><strong>Blended CAC</strong>Total spend &divide; new customers acquired. Reported alongside ICP match rate.</li>
+                <li><strong>CAC : LTV Proxy</strong>Blended CAC vs. first-year ACV. Leading proxy: Business Hub credit utilization at 90 days post-acquisition.</li>
+                <li><strong>Assisted Conversions</strong>Paid touchpoints appearing in multi-touch closed-won paths.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="metrics-right">
+            <div class="excluded-box fragment fade-up">
+              <h4>Explicitly Excluded</h4>
+              <ul>
+                <li>MQL volume. Leading indicator only, never a success metric.</li>
+                <li>Impressions and reach. Reported, never optimized toward.</li>
+                <li>CTR as a performance signal. Conversion quality supersedes click volume.</li>
+              </ul>
+            </div>
+            <div class="reporting-box fragment fade-up">
+              <h4>Stakeholder Reporting</h4>
+              <ul>
+                <li><strong>Sales</strong>Weekly. SAL rate, ICP match rate, pipeline contribution.</li>
+                <li><strong>Marketing</strong>Monthly. Full Tier 1 to 3 dashboard, channel efficiency, circle transition progress.</li>
+                <li><strong>Executive</strong>Quarterly. Blended CAC, CAC : LTV proxy, pipeline vs. $15M target.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="corner-stack"><span></span><span></span><span></span></div>
+        <div class="slide-sig">Chase Burns · KNIME Paid Media Manager</div>
+      </div>
+
+      <aside class="notes">
+        <ul>
+          <li>Optimize for the metric that is most closely aligned with value, not the one that's easiest to hit.
+          <li>SAL rate is the handshake between Marketing and Sales. If SAL rate is low, we have a quality problem. If it is high but pipeline is not growing, we have a volume problem.</li>
+          <li>The CAC-to-LTV proxy using Business Hub credit utilization is KNIME-specific. It uses their own usage-based model as a leading signal for expansion revenue, which is only possible because I understand how their pricing model works.</li>
+        </ul>
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.min.js"></script>
+<script>
+  const deck = new Reveal({
+    width: 1440,
+    height: 900,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0,
+    hash: true,
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    plugins: [ RevealNotes ],
+  });
+  deck.initialize();
+
+  // ── GSAP slide timelines ──────────────────────────────────────────────────
+  const G = { ease: 'power3.out', dur: 0.55 };
+
+  function buildTimeline(slide, h) {
+    const tl = gsap.timeline();
+
+    if (h === 0) {
+      // Slide 0: Title — all animations are fragment-triggered (see fragmentshown listener)
+
+    } else if (h === 1) {
+      // Slide 1: Program Goals
+      tl.set(slide.querySelector('.stat-grid'), { opacity: 1 })
+        .fromTo(slide.querySelector('.headline-block'),
+          { y: 32, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0)
+        .fromTo(slide.querySelectorAll('.stat-box'),
+          { y: 22, opacity: 0, scale: 0.96 },
+          { y: 0, opacity: 1, scale: 1, duration: G.dur, ease: G.ease, stagger: 0.1 }, 0.28)
+        .fromTo(slide.querySelector('h4.anim'),
+          { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0.58)
+        .fromTo(slide.querySelector('.two-col'),
+          { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0.68)
+        .fromTo(slide.querySelectorAll('.s1n-main'),
+          { opacity: 0, x: 12 }, { opacity: 1, x: 0, duration: 0.45, ease: G.ease }, 0.12)
+        .fromTo(slide.querySelectorAll('.s1n-curve'),
+          { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out', stagger: 0.09 }, 0.46)
+        .fromTo(slide.querySelectorAll('.s1n-child'),
+          { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.38, ease: G.ease, stagger: 0.1 }, 0.62);
+
+    } else if (h >= 2 && h <= 4) {
+      // Slides 2–4: Persona slides
+      tl.fromTo(slide.querySelector('.accent-bar'),
+          { scaleX: 0, transformOrigin: 'left center' },
+          { scaleX: 1, duration: 0.42, ease: 'power2.inOut' }, 0)
+        .fromTo(slide.querySelector('.headline-block'),
+          { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0.18)
+        .fromTo(slide.querySelectorAll('.persona-card'),
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: G.dur, ease: G.ease, stagger: 0.11 }, 0.38)
+        .fromTo(slide.querySelector('.callout'),
+          { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0.85);
+
+    } else if (h === 5) {
+      // Slide 5: Engagement Model — headline, fragments handle tier cols
+      tl.fromTo(slide.querySelector('.headline-block'),
+          { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0);
+
+    } else if (h === 6) {
+      // Slide 6: Channel & Budget — stagger rows, animate bar widths
+      tl.fromTo(slide.querySelector('.headline-block'),
+          { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0)
+        .fromTo(slide.querySelectorAll('.budget-row'),
+          { x: -18, opacity: 0 },
+          { x: 0, opacity: 1, duration: G.dur, ease: G.ease, stagger: 0.12 }, 0.28);
+
+      slide.querySelectorAll('.budget-bar').forEach((bar, i) => {
+        const target = (bar.dataset.width || '100') + '%';
+        tl.fromTo(bar,
+          { width: '0%' },
+          { width: target, duration: 0.78, ease: 'power2.out' },
+          0.32 + i * 0.14);
+      });
+
+      tl.fromTo(slide.querySelector('.keyword-cluster'),
+          { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0.9)
+        .fromTo(slide.querySelector('.callout.anim'),
+          { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 1.0);
+
+    } else if (h === 7) {
+      // Slide 7: Metrics — headline + stat row, fragments handle tiers
+      tl.fromTo(slide.querySelector('.headline-block'),
+          { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: G.dur, ease: G.ease }, 0)
+        .fromTo(slide.querySelectorAll('.stat-box'),
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: G.dur, ease: G.ease, stagger: 0.1 }, 0.25);
+    }
+
+    return tl;
+  }
+
+  function resetSlide(slide, h) {
+    if (h === 0) {
+      gsap.killTweensOf(slide.querySelectorAll('.s1-title-content, .s1-title-footer, .title-ring'));
+      gsap.set(slide.querySelectorAll('.s1-title-content, .s1-title-footer, .title-ring'), { clearProps: 'all' });
+      return;
+    }
+    gsap.killTweensOf(slide.querySelectorAll('.anim, .persona-card, .stat-box, .accent-bar, .budget-bar, .budget-row, .keyword-cluster, .s1n-main, .s1n-curve, .s1n-child'));
+    // Clear GSAP inline styles so CSS .anim { opacity:0 } takes over again
+    gsap.set(slide.querySelectorAll('.headline-block, .persona-card, .callout, .keyword-cluster'), { clearProps: 'all' });
+    gsap.set(slide.querySelectorAll('.s1n-main, .s1n-curve, .s1n-child'), { clearProps: 'all' });
+    gsap.set(slide.querySelectorAll('.stat-box, .stat-grid'), { clearProps: 'all' });
+    const accentBar = slide.querySelector('.accent-bar');
+    if (accentBar) gsap.set(accentBar, { clearProps: 'transform' });
+    // Restore budget bar widths (clearProps would strip inline width)
+    slide.querySelectorAll('.budget-bar').forEach(bar => {
+      gsap.set(bar, { width: (bar.dataset.width || '100') + '%' });
+    });
+    slide.querySelectorAll('.budget-row').forEach(row => gsap.set(row, { clearProps: 'all' }));
+  }
+
+  deck.on('fragmentshown', function(event) {
+    if (event.fragment.classList.contains('title-trigger')) {
+      const slide = event.fragment.closest('section');
+      gsap.timeline()
+        .fromTo(slide.querySelectorAll('.s1-title-content, .s1-title-footer'),
+          { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: G.dur, ease: G.ease, stagger: 0.12 }, 0)
+        .fromTo(slide.querySelectorAll('.title-ring'),
+          { opacity: 0 },
+          { opacity: 1, duration: 0.55, ease: 'power2.out', stagger: 0.14 }, 1.0);
+    }
+  });
+
+  deck.on('fragmenthidden', function(event) {
+    if (event.fragment.classList.contains('title-trigger')) {
+      const slide = event.fragment.closest('section');
+      gsap.killTweensOf(slide.querySelectorAll('.s1-title-content, .s1-title-footer, .title-ring'));
+      gsap.set(slide.querySelectorAll('.s1-title-content, .s1-title-footer, .title-ring'), { clearProps: 'all' });
+    }
+  });
+
+  let activeTl = null;
+
+  deck.on('slidechanged', (e) => {
+    if (activeTl) activeTl.kill();
+    if (e.previousSlide) resetSlide(e.previousSlide, e.previousIndexH);
+    activeTl = buildTimeline(e.currentSlide, e.indexh);
+    if (e.currentSlide && e.currentSlide.querySelector('#metrics-slide')) {
+      animateCounters(e.currentSlide);
+    }
+  });
+
+  // ── Slide 7 counter animation (unchanged) ────────────────────────────────
+  function animateCounters(root) {
+    const els = root.querySelectorAll('[data-counter]');
+    els.forEach(el => {
+      const target = parseFloat(el.dataset.counter);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1100;
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = target * eased;
+        const display = Number.isInteger(target) ? Math.round(val) : val.toFixed(1);
+        el.textContent = prefix + display + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = prefix + target + suffix;
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  window.addEventListener('load', () => {
+    const slide = deck.getCurrentSlide();
+    const { h } = deck.getIndices();
+    activeTl = buildTimeline(slide, h);
+    if (slide && slide.querySelector('#metrics-slide')) {
+      animateCounters(slide);
+    }
+  });
+</script>
+</body>
+</html>

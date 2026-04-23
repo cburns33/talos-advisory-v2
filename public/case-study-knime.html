@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study: KNIME Paid Media Strategy | Talos Advisory</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --color-terracotta:    oklch(65.3%  0.12  30.5);
+      --color-dusk-blue:     oklch(46.48% 0.08 254.8);
+      --color-sandy-brown:   oklch(79.86% 0.15  63.98);
+      --color-tropical-teal: oklch(69.98% 0.13 198.5);
+      --bg:                  oklch(0.9376 0.0199 77.31);
+      --bg-alt:              oklch(0.96   0.01   88);
+      --text:                oklch(15.98% 0 0);
+      --text-muted:          oklch(36.3%  0 0);
+      --border:              color-mix(in oklab, oklch(15.98% 0 0) 14%, white);
+      --shadow:              color-mix(in oklab, oklch(15.98% 0 0) 10%, white);
+      --font-body:           'Inter', system-ui, sans-serif;
+      --font-display:        'Montserrat', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; }
+    h1, h2, h3, h4 { margin: 0; }
+
+    /* ─── Layout ─── */
+    .container {
+      width: min(1080px, 100% - 2rem);
+      margin: 0 auto;
+    }
+    .section { padding: clamp(3rem, 8vw, 5rem) 0; }
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 0.75rem;
+    }
+
+    /* ─── Site Header ─── */
+    .site-header {
+      padding: 1.25rem 0;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .header-logo {
+      height: 40px;
+      width: auto;
+      opacity: 0.75;
+    }
+    .header-back {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      padding: 0.4rem 1rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .header-back:hover { border-color: var(--color-dusk-blue); color: var(--color-dusk-blue); }
+
+    /* ─── Context Banner ─── */
+    .context-banner {
+      background: color-mix(in oklab, var(--color-dusk-blue) 8%, white);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-dusk-blue) 18%, white);
+      padding: 0.8rem 0;
+    }
+    .context-banner .container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .context-banner-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--color-dusk-blue);
+      flex-shrink: 0;
+    }
+    .context-banner p {
+      font-size: 0.82rem;
+      color: var(--color-dusk-blue);
+      line-height: 1.5;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: clamp(3rem, 8vw, 5rem) 0 clamp(2rem, 5vw, 3.5rem);
+      border-bottom: 2px solid var(--border);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0.5rem 0 1.25rem;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .tag {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      background: white;
+    }
+    .tag-terracotta { border-color: var(--color-terracotta); color: var(--color-terracotta); }
+    .tag-dusk { border-color: var(--color-dusk-blue); color: var(--color-dusk-blue); }
+    .tag-teal { border-color: var(--color-tropical-teal); color: var(--color-tropical-teal); }
+    .tag-sandy { border-color: var(--color-sandy-brown); color: color-mix(in oklab, var(--color-sandy-brown) 80%, black); }
+
+    /* ─── Section Headings ─── */
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 3vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+    .divider {
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+      margin: 0 0 2.5rem;
+    }
+
+    /* ─── Deliverables Grid ─── */
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .deliverable-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 4px 4px 0 0 var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .deliverable-card:hover {
+      box-shadow: 6px 6px 0 0 var(--shadow);
+      transform: translate(-1px, -1px);
+    }
+    .deliverable-card.primary { border-color: var(--color-terracotta); box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--color-terracotta) 20%, white); }
+    .deliverable-card.primary:hover { box-shadow: 6px 6px 0 0 color-mix(in oklab, var(--color-terracotta) 20%, white); }
+    .deliverable-card.secondary { border-color: var(--color-dusk-blue); box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--color-dusk-blue) 18%, white); }
+    .deliverable-card.secondary:hover { box-shadow: 6px 6px 0 0 color-mix(in oklab, var(--color-dusk-blue) 18%, white); }
+
+    .deliverable-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .deliverable-card.primary .deliverable-label { color: var(--color-terracotta); }
+    .deliverable-card.secondary .deliverable-label { color: var(--color-dusk-blue); }
+
+    .deliverable-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .deliverable-desc {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+      flex: 1;
+    }
+    .deliverable-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      border: 2px solid;
+      transition: background 0.2s, color 0.2s;
+      align-self: flex-start;
+    }
+    .deliverable-card.primary .deliverable-link {
+      border-color: var(--color-terracotta);
+      color: var(--color-terracotta);
+    }
+    .deliverable-card.primary .deliverable-link:hover {
+      background: var(--color-terracotta);
+      color: white;
+    }
+    .deliverable-card.secondary .deliverable-link {
+      border-color: var(--color-dusk-blue);
+      color: var(--color-dusk-blue);
+    }
+    .deliverable-card.secondary .deliverable-link:hover {
+      background: var(--color-dusk-blue);
+      color: white;
+    }
+
+    /* ─── Presentation Embed ─── */
+    .embed-section { background: var(--text); padding: clamp(2rem, 5vw, 3.5rem) 0; }
+    .embed-section .section-heading { color: white; }
+    .embed-section .eyebrow { color: color-mix(in oklab, white 55%, black); }
+    .embed-section .divider { background: rgba(255,255,255,0.12); }
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+    .iframe-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .embed-hint {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+    }
+
+    /* ─── Frameworks Section ─── */
+    .frameworks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .framework-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 3px 3px 0 0 var(--shadow);
+    }
+    .framework-number {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--color-terracotta);
+      margin-bottom: 0.5rem;
+    }
+    .framework-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .framework-desc {
+      font-size: 0.83rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+
+    /* ─── Stats Row ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .stat-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 3px 3px 0 0 var(--shadow);
+      text-align: center;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── Footer CTA ─── */
+    .footer-cta {
+      background: var(--color-dusk-blue);
+      padding: clamp(3rem, 7vw, 4.5rem) 0;
+      text-align: center;
+    }
+    .footer-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    .footer-cta p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.65;
+    }
+    .cta-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      background: white;
+      color: var(--color-dusk-blue);
+      border-radius: 6px;
+      border: 2px solid white;
+      transition: background 0.2s, color 0.2s;
+    }
+    .cta-btn:hover { background: transparent; color: white; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 680px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .deliverables-grid { grid-template-columns: 1fr; }
+      .frameworks-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Site Header ─── -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" aria-label="Back to Talos Advisory">
+        <img src="/favicon.svg" alt="Talos Advisory" class="header-logo" />
+      </a>
+      <a href="/#how-i-work" class="header-back">&#8592; How I Work</a>
+    </div>
+  </header>
+
+  <!-- ─── Context Banner ─── -->
+  <div class="context-banner">
+    <div class="container">
+      <svg class="context-banner-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p>These deliverables were produced as part of a competitive interview assessment for a Paid Media Manager role at KNIME. They represent my approach to B2B strategy, audience design, and analytical thinking, not a live client engagement.</p>
+    </div>
+  </div>
+
+  <!-- ─── Hero ─── -->
+  <div class="hero">
+    <div class="container">
+      <p class="eyebrow">Case Study | B2B SaaS Paid Media</p>
+      <h1 class="hero-title">KNIME: Enterprise Paid Media Program</h1>
+      <p class="hero-desc">A full paid media strategy for KNIME's manufacturing vertical, including audience segmentation, a phased engagement model, $50K/month channel allocation, and a mock campaign assessment with prioritized action items.</p>
+      <div class="hero-tags">
+        <span class="tag tag-terracotta">ABM Strategy</span>
+        <span class="tag tag-dusk">Enterprise B2B SaaS</span>
+        <span class="tag tag-teal">Persona Architecture</span>
+        <span class="tag tag-sandy">Campaign Assessment</span>
+        <span class="tag tag-terracotta">$50K/Month Budget</span>
+        <span class="tag tag-dusk">Multi-Channel</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── The Brief ─── -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">The Assignment</p>
+      <h2 class="section-heading">Two Deliverables. One Strategic Framework.</h2>
+      <div class="divider"></div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value">10</div>
+          <div class="stat-label">Slide Deck</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">4</div>
+          <div class="stat-label">Buyer Personas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">$50K</div>
+          <div class="stat-label">Monthly Budget</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">$15M</div>
+          <div class="stat-label">Pipeline Target</div>
+        </div>
+      </div>
+
+      <div class="deliverables-grid">
+
+        <div class="deliverable-card primary">
+          <div>
+            <div class="deliverable-label">Exercise 01</div>
+            <div class="deliverable-title">Paid Media Strategy Presentation</div>
+          </div>
+          <p class="deliverable-desc">A 10-slide Reveal.js presentation covering program assumptions, four buyer personas, a Concentric Circle engagement model, channel and budget allocation, keyword strategy, and a full measurement framework. Built with GSAP animations.</p>
+          <a href="/knime-paid-media-plan.html" class="deliverable-link" target="_blank" rel="noopener">
+            View Presentation &#8599;
+          </a>
+        </div>
+
+        <div class="deliverable-card secondary">
+          <div>
+            <div class="deliverable-label">Exercise 02</div>
+            <div class="deliverable-title">Mock Campaign Assessment</div>
+          </div>
+          <p class="deliverable-desc">A structured audit of a KNIME mock campaign dataset: data gaps, channel-level performance takeaways for LinkedIn, Google Search, and third-party syndication, prioritized action items, and stakeholder communication strategy.</p>
+          <a href="/knime-campaign-assessment.html" class="deliverable-link" target="_blank" rel="noopener">
+            View Assessment &#8599;
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Presentation Embed ─── -->
+  <div class="embed-section">
+    <div class="container">
+      <p class="eyebrow">Exercise 01</p>
+      <h2 class="section-heading">The Strategy Deck</h2>
+      <div class="divider"></div>
+      <div class="iframe-wrapper">
+        <iframe
+          src="/knime-paid-media-plan.html"
+          title="KNIME Paid Media Strategy Presentation"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <p class="embed-hint">Use arrow keys or click to navigate. Press F to go fullscreen.</p>
+    </div>
+  </div>
+
+  <!-- ─── Key Frameworks ─── -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">What This Demonstrates</p>
+      <h2 class="section-heading">Frameworks and Thinking</h2>
+      <div class="divider"></div>
+      <div class="frameworks-grid">
+
+        <div class="framework-card">
+          <div class="framework-number">01</div>
+          <div class="framework-title">Concentric Circle Engagement Model</div>
+          <p class="framework-desc">Warm-to-cold audience rollout: activate CRM matched lists and open-source registrants first, then expand to TAL lookalikes, then scale with cold acquisition. This compounds efficiency rather than burning budget on cold audiences from day one.</p>
+        </div>
+
+        <div class="framework-card">
+          <div class="framework-number">02</div>
+          <div class="framework-title">SAL-First Measurement Philosophy</div>
+          <p class="framework-desc">MQLs serve as leading indicators only. Success is measured on Sales Accepted Leads (SALs), pipeline contribution, and CAC efficiency. This aligns paid media KPIs directly to revenue, not vanity form fills.</p>
+        </div>
+
+        <div class="framework-card">
+          <div class="framework-number">03</div>
+          <div class="framework-title">Persona-Based Targeting Architecture</div>
+          <p class="framework-desc">Four distinct buyer personas, each with specific channel behavior, content hooks, and conversion triggers: the Analytics Manager (search-led), Operations VP (LinkedIn + trade press), Enterprise Architect (competitive displacement), and Economic Buyer (championed).</p>
+        </div>
+
+        <div class="framework-card">
+          <div class="framework-number">04</div>
+          <div class="framework-title">Signal Quality Over Volume</div>
+          <p class="framework-desc">The campaign assessment identified noise in the existing program: LinkedIn audience expansion cherry-picking easy converters, third-party syndication generating low-quality leads, and branded keyword spend distorting Google CPC benchmarks. Fix signal before scaling spend.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer CTA ─── -->
+  <div class="footer-cta">
+    <div class="container">
+      <h2>Need This Kind of Thinking for Your Program?</h2>
+      <p>This is how I approach every engagement: audience-first, signal-driven, and revenue-accountable from day one.</p>
+      <a href="/#contact" class="cta-btn">Get in Touch</a>
+    </div>
+  </div>
+
+</body>
+</html>

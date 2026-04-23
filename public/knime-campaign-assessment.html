@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KNIME Campaign Assessment | Talos Advisory</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Talos Design Tokens ─── */
+    :root {
+      --color-terracotta:    oklch(65.3%  0.12  30.5);
+      --color-dusk-blue:     oklch(46.48% 0.08 254.8);
+      --color-tropical-teal: oklch(69.98% 0.13 198.5);
+      --color-sandy-brown:   oklch(79.86% 0.15  63.98);
+      --bg:                  oklch(0.9376 0.0199 77.31);
+      --bg-alt:              oklch(0.96   0.01   88);
+      --text:                oklch(15.98% 0 0);
+      --text-muted:          oklch(36.3%  0 0);
+      --border:              color-mix(in oklab, oklch(15.98% 0 0) 14%, white);
+      --shadow:              color-mix(in oklab, oklch(15.98% 0 0) 10%, white);
+      --font-body:           'Inter', system-ui, sans-serif;
+      --font-display:        'Montserrat', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Site Nav ─── */
+    .site-nav {
+      padding: 1.1rem 0;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .site-nav .nav-inner {
+      width: min(1080px, 100% - 2rem);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-logo {
+      height: 36px;
+      width: auto;
+      opacity: 0.75;
+    }
+    .nav-back {
+      font-family: var(--font-display);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      padding: 0.35rem 0.85rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .nav-back:hover { border-color: var(--color-dusk-blue); color: var(--color-dusk-blue); }
+
+    /* ─── Doc Header ─── */
+    .doc-header {
+      background: var(--color-dusk-blue);
+      padding: 52px 80px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+    .doc-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 90% 110%, rgba(255,255,255,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .header-logo {
+      position: absolute;
+      top: 34px;
+      right: 54px;
+      height: 26px;
+      filter: brightness(0) invert(1);
+      opacity: 0.7;
+    }
+    .header-eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 16px;
+    }
+    .header-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.06;
+      color: #ffffff;
+      margin-bottom: 22px;
+    }
+    .header-rule {
+      width: 48px;
+      height: 3px;
+      background: var(--color-terracotta);
+      margin-bottom: 20px;
+    }
+    .header-meta {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ─── Page Body ─── */
+    .doc-body {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 5vw, 80px);
+    }
+
+    /* ─── Section Wrapper ─── */
+    .doc-section { padding-top: 56px; }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .section-rule {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 14px 0 28px;
+    }
+    .section-lead {
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 1.0rem;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1.65;
+      color: var(--text-muted);
+      margin: 0 auto 32px;
+      max-width: 720px;
+      padding: 18px 0;
+      border-top: 1px solid color-mix(in oklab, var(--color-terracotta) 30%, white);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-terracotta) 30%, white);
+    }
+
+    /* ─── Info Cards ─── */
+    .card-grid { display: grid; gap: 14px; }
+    .card-grid-2 { grid-template-columns: 1fr 1fr; }
+    .card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 4px 4px 0 0 var(--shadow);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 10px 0 0 10px;
+    }
+    .card.accent-yellow::before { background: var(--color-terracotta); }
+    .card.accent-mint::before   { background: var(--color-tropical-teal); }
+    .card.accent-orange::before { background: var(--color-dusk-blue); }
+    .card.accent-blue::before   { background: var(--color-dusk-blue); }
+
+    .card-label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card.accent-yellow .card-label { color: var(--color-terracotta); }
+    .card.accent-mint   .card-label { color: var(--color-tropical-teal); }
+    .card.accent-orange .card-label { color: var(--color-dusk-blue); }
+    .card.accent-blue   .card-label { color: var(--color-dusk-blue); }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .card p, .card li {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+    .card ul, .card ol { list-style: none; padding-left: 0; }
+    .card li {
+      margin-bottom: 6px;
+      padding-left: 16px;
+      position: relative;
+    }
+    .card li::before {
+      content: '\25B8';
+      position: absolute;
+      left: 0; top: 2px;
+      font-size: 0.65rem;
+      color: var(--color-terracotta);
+    }
+    .card.accent-mint   li::before { color: var(--color-tropical-teal); }
+    .card.accent-orange li::before { color: var(--color-dusk-blue); }
+    .card li:last-child { margin-bottom: 0; }
+    .card > p {
+      position: relative;
+      padding-left: 16px;
+    }
+    .card > p::before {
+      content: '\25B8';
+      position: absolute;
+      left: 0; top: 1px;
+      font-size: 0.65rem;
+      color: var(--color-terracotta);
+    }
+    .card.accent-mint   > p::before { color: var(--color-tropical-teal); }
+    .card.accent-orange > p::before { color: var(--color-dusk-blue); }
+
+    /* ─── Quick Win Cards ─── */
+    .qw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .qw-card {
+      background: white;
+      border: 2px solid color-mix(in oklab, var(--color-terracotta) 25%, white);
+      border-radius: 10px;
+      padding: 20px 22px 20px 68px;
+      position: relative;
+      box-shadow: 3px 3px 0 0 color-mix(in oklab, var(--color-terracotta) 15%, white);
+    }
+    .qw-number {
+      position: absolute;
+      left: 20px; top: 18px;
+      width: 32px; height: 32px;
+      background: color-mix(in oklab, var(--color-terracotta) 10%, white);
+      border: 1px solid color-mix(in oklab, var(--color-terracotta) 35%, white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--color-terracotta);
+    }
+    .qw-card p {
+      font-size: 0.82rem; line-height: 1.55;
+      color: var(--text-muted);
+      position: relative; padding-left: 16px;
+    }
+    .qw-card p::before {
+      content: '\25B8';
+      position: absolute; left: 0; top: 1px;
+      font-size: 0.65rem;
+      color: color-mix(in oklab, var(--color-terracotta) 50%, white);
+    }
+
+    /* ─── Filled Quick Win ─── */
+    .qw-card.filled {
+      background: var(--color-terracotta);
+      border-color: var(--color-terracotta);
+      box-shadow: 3px 3px 0 0 color-mix(in oklab, var(--color-terracotta) 60%, black);
+    }
+    .qw-card.filled .qw-number {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.3);
+      color: #fff;
+    }
+    .qw-card.filled p { color: #fff; }
+    .qw-card.filled p::before { color: rgba(255,255,255,0.5); }
+
+    /* ─── 30-Day Project Cards ─── */
+    .proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .proj-card {
+      background: white;
+      border: 2px solid color-mix(in oklab, var(--color-dusk-blue) 22%, white);
+      border-radius: 10px;
+      padding: 20px 22px 20px 68px;
+      position: relative;
+      box-shadow: 3px 3px 0 0 color-mix(in oklab, var(--color-dusk-blue) 12%, white);
+    }
+    .proj-number {
+      position: absolute;
+      left: 20px; top: 18px;
+      width: 32px; height: 32px;
+      background: color-mix(in oklab, var(--color-dusk-blue) 10%, white);
+      border: 1px solid color-mix(in oklab, var(--color-dusk-blue) 30%, white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--color-dusk-blue);
+    }
+    .proj-card.filled {
+      background: var(--color-dusk-blue);
+      border-color: var(--color-dusk-blue);
+      box-shadow: 3px 3px 0 0 color-mix(in oklab, var(--color-dusk-blue) 60%, black);
+    }
+    .proj-card.filled .proj-number {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+    .proj-card.filled .item-title { color: #fff; }
+    .proj-card.filled .item-subs li { color: rgba(255,255,255,0.7); }
+    .proj-card.filled .item-subs li::before { color: rgba(255,255,255,0.4); }
+
+    /* ─── Test Cards ─── */
+    .tst-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .tst-card {
+      background: white;
+      border: 2px solid color-mix(in oklab, var(--color-tropical-teal) 25%, white);
+      border-radius: 10px;
+      padding: 20px 22px 20px 68px;
+      position: relative;
+      box-shadow: 3px 3px 0 0 color-mix(in oklab, var(--color-tropical-teal) 15%, white);
+    }
+    .tst-card.tst-card-wide { grid-column: 1 / -1; }
+    .tst-number {
+      position: absolute;
+      left: 20px; top: 18px;
+      width: 32px; height: 32px;
+      background: color-mix(in oklab, var(--color-tropical-teal) 12%, white);
+      border: 1px solid color-mix(in oklab, var(--color-tropical-teal) 35%, white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--color-tropical-teal);
+    }
+    .tst-card.filled {
+      background: var(--color-tropical-teal);
+      border-color: var(--color-tropical-teal);
+      box-shadow: 3px 3px 0 0 color-mix(in oklab, var(--color-tropical-teal) 55%, black);
+    }
+    .tst-card.filled .tst-number {
+      background: rgba(0,0,0,0.1);
+      border-color: rgba(0,0,0,0.15);
+      color: var(--text);
+    }
+    .tst-card.filled .item-title { color: var(--text); }
+    .tst-card.filled .item-subs li { color: rgba(0,0,0,0.62); }
+    .tst-card.filled .item-subs li::before { color: rgba(0,0,0,0.35); }
+
+    /* ─── Shared Item Card Content ─── */
+    .item-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1.45;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-family: var(--font-display);
+    }
+    .item-subs { list-style: none; padding: 0; margin: 0; }
+    .item-subs li {
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      padding: 2px 0 2px 14px;
+      position: relative;
+      margin-bottom: 3px;
+    }
+    .item-subs li:last-child { margin-bottom: 0; }
+    .item-subs li::before {
+      content: '\25B8';
+      position: absolute;
+      left: 0; top: 2px;
+      font-size: 0.65rem;
+      color: var(--color-terracotta);
+    }
+    .proj-card .item-subs li::before { color: var(--color-dusk-blue); }
+    .tst-card  .item-subs li::before { color: var(--color-tropical-teal); }
+
+    /* ─── Communication Cards ─── */
+    .comms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .comms-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 4px 4px 0 0 var(--shadow);
+    }
+    .comms-card.marketing::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+      background: var(--color-tropical-teal);
+      border-radius: 10px 0 0 10px;
+    }
+    .comms-card.sales::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+      background: var(--color-terracotta);
+      border-radius: 10px 0 0 10px;
+    }
+    .comms-audience {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .comms-card.marketing .comms-audience { color: var(--color-tropical-teal); }
+    .comms-card.sales     .comms-audience { color: var(--color-terracotta); }
+    .comms-headline {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      font-style: italic;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.5;
+    }
+    .comms-card ul { list-style: none; padding: 0; }
+    .comms-card li {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+      padding: 7px 0 7px 18px;
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 5%, white);
+      position: relative;
+    }
+    .comms-card li:last-child { border-bottom: none; }
+    .comms-card.marketing li::before {
+      content: '\2192';
+      position: absolute; left: 0;
+      color: var(--color-tropical-teal);
+      font-size: 0.72rem; top: 8px;
+    }
+    .comms-card.sales li::before {
+      content: '\2192';
+      position: absolute; left: 0;
+      color: var(--color-terracotta);
+      font-size: 0.72rem; top: 8px;
+    }
+
+    /* ─── Footer ─── */
+    .doc-footer {
+      max-width: 1040px;
+      margin: 64px auto 0;
+      padding: 20px clamp(1rem, 5vw, 80px) 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .doc-footer span {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ─── Subsection labels ─── */
+    .sublabel {
+      font-family: var(--font-display);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 680px) {
+      .doc-header { padding: 40px 1.5rem 32px; }
+      .header-logo { display: none; }
+      .card-grid-2, .card-grid-3, .qw-grid, .proj-grid, .tst-grid, .comms-grid {
+        grid-template-columns: 1fr;
+      }
+      .tst-card.tst-card-wide { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Site Nav ─── -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/" aria-label="Back to Talos Advisory">
+        <img src="/favicon.svg" alt="Talos Advisory" class="nav-logo" />
+      </a>
+      <a href="/case-study-knime.html" class="nav-back">&#8592; Back to Case Study</a>
+    </div>
+  </nav>
+
+  <!-- ─── Doc Header ─── -->
+  <header class="doc-header">
+    <img class="header-logo" src="https://raw.githubusercontent.com/cburns33/KNIME-paid-media/main/assets/KNIMELogoTM.svg" alt="KNIME">
+    <div class="header-eyebrow">Exercise 2 &nbsp;&middot;&nbsp; Campaign Assessment</div>
+    <h1 class="header-title">Mock Campaign Assessment</h1>
+    <div class="header-rule"></div>
+    <div class="header-meta">Chase Burns &nbsp;&middot;&nbsp; KNIME Paid Media Manager Candidate</div>
+  </header>
+
+  <div class="doc-body">
+
+    <!-- ═══ SECTION 1: DATA GAPS ═══════════════════════════════ -->
+    <section class="doc-section">
+      <div class="section-label">Section 01</div>
+      <div class="section-title">Data Gaps &amp; Assumptions</div>
+      <div class="section-rule"></div>
+
+      <div class="card-grid card-grid-2">
+
+        <div class="card accent-yellow">
+          <div class="card-label">Spend Reconciliation</div>
+          <div class="card-title">The numbers don't add up.</div>
+          <p>It's difficult to draw reliable conclusions without full spend reconciliation, but I proceeded assuming that the impression numbers should be higher.</p>
+        </div>
+
+        <div class="card accent-yellow">
+          <div class="card-label">Channel-Level Demo Rate</div>
+          <div class="card-title">30% cumulative, but per channel?</div>
+          <p>The 30% cumulative demo-from-target-accounts figure is useful, but it would be helpful to know what that percentage looks like broken out by channel.</p>
+        </div>
+
+        <div class="card accent-yellow">
+          <div class="card-label">SALs &amp; Conversion Value</div>
+          <div class="card-title">Missing downstream metrics</div>
+          <p>Adequate detail is given to conclude that we'd definitely like for the campaign to perform better, but knowing if we did manage to get some SALs out of it would inform on the sales team's temperature.</p>
+        </div>
+
+        <div class="card accent-yellow">
+          <div class="card-label">MQL Weighting</div>
+          <div class="card-title">Are MQL weights channel-agnostic?</div>
+          <p>For this exercise's purposes, I've proceeded assuming they are for now, but in practice this is an assumption worth challenging, since LinkedIn and syndication leads tend to differ in signal quality.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 2: PERFORMANCE TAKEAWAYS ═══════════════════ -->
+    <section class="doc-section">
+      <div class="section-label">Section 02</div>
+      <div class="section-title">Performance Takeaways</div>
+      <div class="section-rule"></div>
+      <p class="section-lead">Overall, these numbers look like they came from a primary objective of cost per MQL, but the campaign brought in a lot of noise for the sales team because the net was cast too wide.</p>
+
+      <div class="card-grid card-grid-3">
+
+        <div class="card accent-mint">
+          <div class="card-label">Channel 1</div>
+          <div class="card-title">LinkedIn</div>
+          <ul>
+            <li>Targeting almost certainly needs to be tightened up, both in terms of account priority and number of people targeted.</li>
+            <li>Platform metrics (CTR, CPA, CPC) are suspiciously good for such a broad audience. Either the conversion definition is inflated or audience expansion is cherry-picking easy converters.</li>
+            <li>The 2-week segmented report suggests LinkedIn loaded up on easy converters early, but now the campaign is stale.</li>
+          </ul>
+        </div>
+
+        <div class="card accent-orange">
+          <div class="card-label">Channel 2</div>
+          <div class="card-title">Google Search</div>
+          <ul>
+            <li>Performance looks satisfactory on its face, but a brand vs. non-brand MQL breakdown is needed before drawing conclusions.</li>
+            <li>The low CPC implies the average may be brought down by branded keyword spend. In that case, a higher CTR would be expected, so something may be off there.</li>
+          </ul>
+        </div>
+
+        <div class="card accent-yellow">
+          <div class="card-label">Channel 3</div>
+          <div class="card-title">Third-Party Syndication</div>
+          <ul>
+            <li>Likely given too much budget relative to the campaign's objective.</li>
+            <li>Most, if not all, of the leads from here are spam at worst and unqualified at best.</li>
+            <li>That MQL number does suggest there's at least some potential across these sources worth preserving at a reduced scale.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 3: ACTION ITEMS ════════════════════════════ -->
+    <section class="doc-section">
+      <div class="section-label">Section 03</div>
+      <div class="section-title">Action Items</div>
+      <div class="section-rule"></div>
+
+      <div class="sublabel" style="margin-bottom:12px;">Quick Wins</div>
+      <div class="qw-grid" style="margin-bottom:28px;">
+        <div class="qw-card">
+          <div class="qw-number">1</div>
+          <p>Turn off LinkedIn Audience Network, Google Display Network, and Google auto-apply recommendations setting.</p>
+        </div>
+        <div class="qw-card">
+          <div class="qw-number">2</div>
+          <p>Divest from Third-Party Syndication greatly, and go all in on the syndication outlets that give the most control and/or visibility into where ads are being served.</p>
+        </div>
+        <div class="qw-card">
+          <div class="qw-number">3</div>
+          <p>Reel in Google branded keyword spend, if there is strong SEO brand protection in place.</p>
+        </div>
+        <div class="qw-card filled">
+          <div class="qw-number">4</div>
+          <p>Trim LinkedIn account list, job function, and job title filters to get to a TAL of 25,000 at most.</p>
+        </div>
+      </div>
+
+      <div class="sublabel" style="margin-bottom:12px;">30-Day Projects</div>
+      <div class="proj-grid" style="margin-bottom:28px;">
+        <div class="proj-card">
+          <div class="proj-number">1</div>
+          <p class="item-title">Scale up LinkedIn creative, Google RSA testing (Claude, LinkedIn/Google API)</p>
+          <ul class="item-subs">
+            <li>Actionable ad copy language with a clear value prop</li>
+          </ul>
+        </div>
+        <div class="proj-card filled">
+          <div class="proj-number">2</div>
+          <p class="item-title">First-party data collection</p>
+          <ul class="item-subs">
+            <li>Reverse IP lookup, Google offline conversion import, UTM structure verification, and Syndication vendor account filtering, if possible</li>
+          </ul>
+        </div>
+        <div class="proj-card">
+          <div class="proj-number">3</div>
+          <p class="item-title">Test LinkedIn LGFs vs. landing pages</p>
+          <ul class="item-subs">
+            <li>LGFs preferred here, if confident in the account list</li>
+          </ul>
+        </div>
+        <div class="proj-card">
+          <div class="proj-number">4</div>
+          <p class="item-title">Confirm Google signal clarity</p>
+          <ul class="item-subs">
+            <li>Budget controls based on high-intent keywords vs. broader/educational searches</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sublabel" style="margin-bottom:12px;">Tests to Consider</div>
+      <div class="tst-grid">
+        <div class="tst-card">
+          <div class="tst-number">1</div>
+          <p class="item-title">Meta Ads, using some of the Third-Party Syndicate budget</p>
+          <ul class="item-subs">
+            <li>Lower CPMs than LinkedIn with improving B2B targeting via custom audience uploads</li>
+            <li>Scaled ad creative testing pivotal for this channel</li>
+          </ul>
+        </div>
+        <div class="tst-card">
+          <div class="tst-number">2</div>
+          <p class="item-title">Streaming TV / digital billboards for known, high-profile decision makers</p>
+          <ul class="item-subs">
+            <li>MNTN, Basis, and LinkedIn's CTV partnerships</li>
+            <li>Budget-intensive, so scope as a small pilot against 50-100 named accounts</li>
+          </ul>
+        </div>
+        <div class="tst-card filled">
+          <div class="tst-number">3</div>
+          <p class="item-title">LinkedIn Thought Leader Ads</p>
+          <ul class="item-subs">
+            <li>~55% of enterprise B2B organizations run them</li>
+            <li>KNIME clearly has the subject matter expertise</li>
+          </ul>
+        </div>
+        <div class="tst-card">
+          <div class="tst-number">4</div>
+          <p class="item-title">LinkedIn Conversation Ads</p>
+          <ul class="item-subs">
+            <li>Dubious effectiveness, but some organizations have had success</li>
+          </ul>
+        </div>
+        <div class="tst-card tst-card-wide">
+          <div class="tst-number">5</div>
+          <p class="item-title">Performance Max &amp; Demand Gen Google campaigns, if sufficient budget and creative are available</p>
+          <ul class="item-subs">
+            <li>Performance Max for retargeting; Demand Gen for YouTube</li>
+            <li>Tight leashes on targeting and budget for both</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 4: COMMUNICATION STRATEGY ══════════════════ -->
+    <section class="doc-section">
+      <div class="section-label">Section 04</div>
+      <div class="section-title">Communication Strategy</div>
+      <div class="section-rule"></div>
+
+      <div class="comms-grid">
+
+        <div class="comms-card marketing">
+          <div class="comms-audience">Marketing</div>
+          <div class="comms-headline">"The demand is clearly there. We just need to tighten some areas up and verify signal clarity."</div>
+          <ul>
+            <li>Create a project roadmap visualization, then break it into tasks in Asana for visibility and dependencies.</li>
+            <li>Propose a bi-weekly sync between Marketing and Sales Ops to review it together rather than in separate reporting silos.</li>
+          </ul>
+        </div>
+
+        <div class="comms-card sales">
+          <div class="comms-audience">Sales</div>
+          <div class="comms-headline">"Ensure alignment on lead quality as a primary performance metric, and get individual unqualified lead examples."</div>
+          <ul>
+            <li>Highlight campaign segments with genuine high performance not as a diversion, but as strategic takeaways.</li>
+            <li>Make it collaborative rather than defensive by scheduling a lead scoring calibration session.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="doc-footer">
+    <span>Chase Burns &nbsp;&middot;&nbsp; KNIME Paid Media Manager Candidate</span>
+    <span>Exercise 2 &nbsp;&middot;&nbsp; Mock Campaign Assessment</span>
+  </footer>
+
+</body>
+</html>

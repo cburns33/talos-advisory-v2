@@ -18,6 +18,16 @@ const HowIWorkSection = ({ steps }) => {
             </article>
           ))}
         </div>
+        <a href="/case-study-knime.html" className="see-it-applied-panel" data-element="See It Applied Panel">
+          <div className="see-it-applied-inner">
+            <div className="see-it-applied-text">
+              <p className="see-it-applied-eyebrow">See It Applied</p>
+              <h3 className="see-it-applied-title">KNIME: Enterprise Paid Media Strategy</h3>
+              <p className="see-it-applied-desc">A full B2B SaaS program, four buyer personas, $50K/month budget allocation, and a mock campaign assessment. The whole process, end to end.</p>
+            </div>
+            <span className="see-it-applied-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
       </div>
     </section>
   );
