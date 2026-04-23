@@ -664,6 +664,24 @@
   transform: scale(1.04);
 }
 
+.client-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.client-logo-link:hover .client-logo {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.client-logo-link:active .client-logo {
+  transform: scale(1.04);
+}
+
 .section--final-cta {
   background: var(--bg-alt);
 }
