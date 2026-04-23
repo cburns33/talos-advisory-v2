@@ -383,12 +383,46 @@
     }
     .cta-btn:hover { background: transparent; color: white; }
 
+    /* ─── Presentation embed mobile fallback ─── */
+    .embed-mobile-fallback {
+      display: none;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .embed-mobile-fallback p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+    .embed-mobile-open-btn {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.5rem;
+      background: oklch(65.3% 0.12 30.5);
+      color: white;
+      border-radius: 6px;
+      border: 2px solid oklch(65.3% 0.12 30.5);
+      transition: background 0.2s;
+    }
+    .embed-mobile-open-btn:hover { background: color-mix(in oklab, oklch(65.3% 0.12 30.5) 85%, black); }
+
     /* ─── Responsive ─── */
     @media (max-width: 680px) {
       .hero-grid { grid-template-columns: 1fr; }
       .deliverables-grid { grid-template-columns: 1fr; }
       .frameworks-grid { grid-template-columns: 1fr; }
       .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .iframe-wrapper { display: none; }
+      .embed-hint { display: none; }
+      .embed-mobile-fallback { display: block; }
     }
   </style>
 </head>
@@ -500,6 +534,10 @@
         ></iframe>
       </div>
       <p class="embed-hint">Use arrow keys or click to navigate. Press F to go fullscreen.</p>
+      <div class="embed-mobile-fallback">
+        <p>This presentation is best viewed on a desktop. Open it directly for the full experience.</p>
+        <a href="/knime-paid-media-plan.html" class="embed-mobile-open-btn" target="_blank" rel="noopener">Open Presentation &#8599;</a>
+      </div>
     </div>
   </div>
 

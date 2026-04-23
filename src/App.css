@@ -432,17 +432,19 @@
 .see-it-applied-panel {
   display: block;
   margin-top: 1.5rem;
-  background: white;
+  background: var(--color-terracotta);
   border: 2px solid var(--color-terracotta);
   border-radius: 12px;
   text-decoration: none;
-  color: inherit;
-  box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--color-terracotta) 18%, white);
-  transition: box-shadow 0.2s, transform 0.2s;
+  color: white;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--color-terracotta) 55%, black);
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
 }
 
 .see-it-applied-panel:hover {
-  box-shadow: 6px 6px 0 0 color-mix(in oklab, var(--color-terracotta) 18%, white);
+  background: color-mix(in oklab, var(--color-terracotta) 88%, black);
+  box-shadow: 6px 6px 0 0 color-mix(in oklab, var(--color-terracotta) 55%, black);
   transform: translate(-1px, -1px);
 }
 
@@ -460,7 +462,7 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-terracotta);
+  color: rgba(255,255,255,0.65);
   margin: 0 0 0.35rem;
 }
 
@@ -469,20 +471,20 @@
   font-size: 1rem;
   font-weight: 700;
   margin: 0 0 0.4rem;
-  color: var(--text);
+  color: white;
 }
 
 .see-it-applied-desc {
   font-size: 0.84rem;
   line-height: 1.55;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.75);
   margin: 0;
   max-width: 560px;
 }
 
 .see-it-applied-arrow {
-  font-size: 1.5rem;
-  color: var(--color-terracotta);
+  font-size: 1.75rem;
+  color: rgba(255,255,255,0.85);
   flex-shrink: 0;
   line-height: 1;
 }
